@@ -144,16 +144,15 @@ export default function Navbar() {
                     cursor: "pointer",
                   }}
                 >
-                  <img
-              src={imagemPreview || (isAluno ? usuario.aluno?.fotoUrl : usuario.empresa?.fotoUrl) || "/default-avatar.png"}
-              alt="Foto de perfil"
-              className="foto-perfil"
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: "50%",
-                      border: "2px solid #3298EF", 
-                    }}
+              <img
+                  src={(user.aluno?.fotoUrl || user.empresa?.fotoUrl) || "/default-avatar.png"}
+                  alt={user.email}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: "50%",
+                    border: "2px solid #3298EF", 
+                  }}
                   />
                   {/* Ícone para o dropdown de DESKTOP (se o mobile não estiver aberto) */}
                   {!mobileOpen && (menuOpen ? <X size={24} /> : <Menu size={24} />)}
