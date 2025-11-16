@@ -15,22 +15,26 @@
   --danger-color: #e74c3c;
   --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.08);
 
-  /* 🚀 ADICIONADO: Paleta de Tags Coloridas (copiada do projetos.css) */
-  --tag-javascript: #f7df1e;
-  --tag-python: #306998;
-  --tag-java: #e04a4f;
-  --tag-csharp: #178600; 
-  --tag-c-plus-plus: #00599c; 
-  --tag-react: #61dafb;
-  --tag-angular: #dd1b16;
-  --tag-vue-js: #42b883; 
-  --tag-node-js: #3c873a; 
-  --tag-spring-boot: #6db33f; 
-  --tag-sql: #cc7001;
-  --tag-mongodb: #47a248;
-  --tag-aws: #ff9900;
-  --tag-docker: #2496ed;
+ --tag-default-border: #312e81;
+  --tag-default-color: #312e81;
+
+  /* --- Cores Específicas (Nomes Corrigidos) --- */
+  --tag-JavaScript: #f7df1e;
+  --tag-Python: #306998;
+  --tag-Java: #e04a4f;
+  --tag-C-sharp: #178600;  
+  --tag-C-plus-plus: #00599c;
+  --tag-React: #61dafb;
+  --tag-Angular: #dd1b16;
+  --tag-Vue-js: #42b883;
+  --tag-Node-js: #3c873a;
+  --tag-Spring-Boot: #6db33f;
+  --tag-SQL: #cc7001;
+  --tag-MongoDB: #47a248;
+  --tag-AWS: #ff9900;
+  --tag-Docker: #2496ed;
 }
+
 
 body {
     background-color: var(--background-light);
@@ -201,16 +205,40 @@ body {
     padding-right: 15px; 
 }
 
+/* Grid de Checkboxes no modo edição */
+.tags-checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #dcdcdc; 
+}
+
+.tag-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.tags-checkbox-grid .help-text {
+    grid-column: 1 / -1;
+    margin-top: 5px;
+}
+
 /* Estilo para campo que PODE ser editado */
 .input-editavel.is-editable input,
-.input-editavel.is-editable textarea {
+.input-editavel.is-editable textarea,
+.input-editavel.is-editable .tags-checkbox-grid {
     border-color: var(--primary-color);
     background: #fff;
     box-shadow: 0 0 5px rgba(49, 46, 129, 0.4);
 }
-
-/* 🚀 REMOVIDO: Bloco .input-editavel.is-editable .tags-checkbox-grid 
-   (Agora é controlado pelo .tag-checkbox-group) */
 
 .input-editavel input:read-only,
 .input-editavel textarea:read-only {
@@ -237,9 +265,7 @@ body {
     opacity: 1;
 }
 
-/* -------------------------------------- */
-/* 🚀 SEÇÃO DE TAGS (MODO LEITURA E EDIÇÃO) - SUBSTITUÍDA */
-/* -------------------------------------- */
+/* --- TAGS (MODO LEITURA) --- */
 
 .tags-container {
     display: flex;
@@ -248,226 +274,114 @@ body {
     padding: 12px 0;
 }
 
+.tag-chip {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 2px solid var(--tag-default-border);
+    color: var(--tag-default-color);
+    background: rgba(49, 46, 129, 0.05);
+    transition: all 0.3s ease;
+}
+
+.tag-chip:hover {
+    opacity: 0.9;
+}
+
+.tag-chip.tag-JavaScript {
+    border-color: var(--tag-JavaScript);
+    color: var(--tag-JavaScript);
+    background-color: rgba(247, 223, 30, 0.1); /* Hex: #f7df1e */
+}
+
+.tag-chip.tag-Python {
+    border-color: var(--tag-Python);
+    color: var(--tag-Python);
+    background-color: rgba(48, 105, 152, 0.1); /* Hex: #306998 */
+}
+
+.tag-chip.tag-Java {
+    border-color: var(--tag-Java);
+    color: var(--tag-Java);
+    background-color: rgba(224, 74, 79, 0.1); /* Hex: #e04a4f */
+}
+
+.tag-chip.tag-C-sharp {
+    border-color: var(--tag-C-sharp);
+    color: var(--tag-C-sharp);
+    background-color: rgba(23, 134, 0, 0.1); /* Hex: #178600 */
+}
+
+.tag-chip.tag-C-plus-plus {
+    border-color: var(--tag-C-plus-plus);
+    color: var(--tag-C-plus-plus);
+    background-color: rgba(0, 89, 156, 0.1); /* Hex: #00599c */
+}
+
+.tag-chip.tag-React {
+    border-color: var(--tag-React);
+    color: var(--tag-React);
+    background-color: rgba(97, 218, 251, 0.1); /* Hex: #61dafb */
+}
+
+.tag-chip.tag-Angular {
+    border-color: var(--tag-Angular);
+    color: var(--tag-Angular);
+    background-color: rgba(221, 27, 22, 0.1); /* Hex: #dd1b16 */
+}
+
+.tag-chip.tag-Vue-js {
+    border-color: var(--tag-Vue-js);
+    color: var(--tag-Vue-js);
+    background-color: rgba(66, 184, 131, 0.1); /* Hex: #42b883 */
+}
+
+.tag-chip.tag-Node-js {
+    border-color: var(--tag-Node-js);
+    color: var(--tag-Node-js);
+    background-color: rgba(60, 135, 58, 0.1); /* Hex: #3c873a */
+}
+
+.tag-chip.tag-Spring-Boot {
+    border-color: var(--tag-Spring-Boot);
+    color: var(--tag-Spring-Boot);
+    background-color: rgba(109, 179, 63, 0.1); /* Hex: #6db33f */
+}
+
+.tag-chip.tag-SQL {
+    border-color: var(--tag-SQL);
+    color: var(--tag-SQL);
+    background-color: rgba(204, 112, 1, 0.1); /* Hex: #cc7001 */
+}
+
+.tag-chip.tag-MongoDB {
+    border-color: var(--tag-MongoDB);
+    color: var(--tag-MongoDB);
+    background-color: rgba(71, 162, 72, 0.1); /* Hex: #47a248 */
+}
+
+.tag-chip.tag-AWS {
+    border-color: var(--tag-AWS);
+    color: var(--tag-AWS);
+    background-color: rgba(255, 153, 0, 0.1); /* Hex: #ff9900 */
+}
+
+.tag-chip.tag-Docker {
+    border-color: var(--tag-Docker);
+    color: var(--tag-Docker);
+    background-color: rgba(36, 150, 237, 0.1); /* Hex: #2496ed */
+}
+
 .no-tags {
     font-style: italic;
     color: var(--text-medium);
     font-size: 0.9em;
 }
 
-/* Estilo Base (Ghost Button) - Copiado do projetos.css */
-.tag-chip {
-    display: inline-block;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.75em;
-    font-weight: 700;
-    white-space: nowrap;
-    transition: all 0.2s ease;
-    cursor: default; 
-    background-color: transparent;
-    border: 2px solid; 
-}
-
-/* Mapeamento de Cores para as Classes Geradas pelo JS (Estado Não Selecionado) */
-.tag-javascript {
-    color: var(--tag-javascript);
-    border-color: var(--tag-javascript);
-}
-.tag-python {
-    color: var(--tag-python);
-    border-color: var(--tag-python);
-}
-.tag-java {
-    color: var(--tag-java);
-    border-color: var(--tag-java);
-}
-.tag-csharp {
-    color: var(--tag-csharp);
-    border-color: var(--tag-csharp);
-}
-.tag-c-plus-plus {
-    color: var(--tag-c-plus-plus);
-    border-color: var(--tag-c-plus-plus);
-}
-.tag-react {
-    color: var(--tag-react);
-    border-color: var(--tag-react);
-}
-.tag-angular {
-    color: var(--tag-angular);
-    border-color: var(--tag-angular);
-}
-.tag-vue-js {
-    color: var(--tag-vue-js);
-    border-color: var(--tag-vue-js);
-}
-.tag-node-js {
-    color: var(--tag-node-js);
-    border-color: var(--tag-node-js);
-}
-.tag-spring-boot {
-    color: var(--tag-spring-boot);
-    border-color: var(--tag-spring-boot);
-}
-.tag-sql {
-    color: var(--tag-sql);
-    border-color: var(--tag-sql);
-}
-.tag-mongodb {
-    color: var(--tag-mongodb);
-    border-color: var(--tag-mongodb);
-}
-.tag-aws {
-    color: var(--tag-aws);
-    border-color: var(--tag-aws);
-}
-.tag-docker {
-    color: var(--tag-docker);
-    border-color: var(--tag-docker);
-}
-
-.tag-chip:hover {
-    background-color: rgba(0, 0, 0, 0.05); /* Sutil hover */
-}
-
-
-/* --- ESTILOS DE CHECKBOX (MODO EDIÇÃO) --- */
-/* (Copiados do projetos.css) */
-
-.tag-checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Espaço entre as tags */
-    margin-top: 10px;
-    padding: 10px;
-    /* Borda e fundo removidos do estilo inline do Perfil.jsx para centralizar aqui */
-    border: 1px solid var(--primary-color);
-    border-radius: 10px;
-    background: var(--background-light);
-}
-
-.tag-checkbox-label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-}
-
-.tag-checkbox-label input[type="checkbox"] {
-    /* Esconde o checkbox nativo */
-    display: none;
-}
-
-/* Reutilizando o estilo da tag-chip como o visual do checkbox */
-.tag-checkbox-label .tag-chip {
-    padding: 7px 15px;
-    border-radius: 20px;
-    font-size: 0.85em;
-    font-weight: 700;
-    transition: all 0.2s ease;
-    border-width: 2px; /* Mante a borda original do tag-chip */
-    background-color: transparent;
-    opacity: 0.8;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Efeito Hover e Foco */
-.tag-checkbox-label:hover .tag-chip {
-    opacity: 1;
-    transform: translateY(-1px);
-}
-
-/* Estilo Base para Checked (Define Textura e Sombra) */
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-chip {
-    opacity: 1;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* REGRA GERAL FORTE DE TEXTO: Força o texto para ESCURO (para tags claras) */
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-chip {
-    color: var(--text-dark) !important;
-}
-
-/* DEFINIÇÃO EXPLÍCITA DE COR DE FUNDO E TEXTO PARA CADA TAG QUANDO CHECADA */
-
-/* TAGS CLARAS (JavaScript, React, AWS, Docker) - Texto Escuro */
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-javascript {
-    background-color: var(--tag-javascript) !important;
-    border-color: var(--tag-javascript) !important;
-    color: var(--text-dark) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-react {
-    background-color: var(--tag-react) !important;
-    border-color: var(--tag-react) !important;
-    color: var(--text-dark) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-aws {
-    background-color: var(--tag-aws) !important;
-    border-color: var(--tag-aws) !important;
-    color: var(--text-dark) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-docker {
-    background-color: var(--tag-docker) !important;
-    border-color: var(--tag-docker) !important;
-    color: var(--text-dark) !important;
-}
-
-/* TAGS ESCURAS/MÉDIAS (Onde o texto deve ser BRANCO) */
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-python {
-    background-color: var(--tag-python) !important;
-    border-color: var(--tag-python) !important;
-    color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-java {
-    background-color: var(--tag-java) !important;
-    border-color: var(--tag-java) !important;
-    color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-csharp {
-    background-color: var(--tag-csharp) !important;
-    border-color: var(--tag-csharp) !important;
-    color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-c-plus-plus {
-    background-color: var(--tag-c-plus-plus) !important;
-    border-color: var(--tag-c-plus-plus) !important;
-    color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-angular {
-    background-color: var(--tag-angular) !important;
-    border-color: var(--tag-angular) !important;
-    color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-vue-js {
-    background-color: var(--tag-vue-js) !important;
-    border-color: var(--tag-vue-js) !important;
-    color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-node-js {
-    background-color: var(--tag-node-js) !important;
-    border-color: var(--tag-node-js) !important;
-    color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-spring-boot {
-    background-color: var(--tag-spring-boot) !important;
-    border-color: var(--tag-spring-boot) !important;
-    color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-sql {
-    background-color: var(--tag-sql) !important;
-    border-color: var(--tag-sql) !important;
-    color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-mongodb {
-    background-color: var(--tag-mongodb) !important;
-    border-color: var(--tag-mongodb) !important;
-    color: var(--card-bg) !important;
-}
-
-/* -------------------------------------- */
 /* --- BOTÕES DE AÇÃO --- */
-/* -------------------------------------- */
 .botoes {
   margin-top: 30px;
   display: flex;
