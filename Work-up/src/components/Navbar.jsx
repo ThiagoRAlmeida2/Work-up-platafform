@@ -144,9 +144,10 @@ export default function Navbar() {
                     cursor: "pointer",
                   }}
                 >
-                 <img
-                    src={(user.aluno?.fotoUrl || user.empresa?.fotoUrl) || "/default-avatar.png"}
-                    alt={user.email}
+                  <img
+              src={imagemPreview || (isAluno ? usuario.aluno?.fotoUrl : usuario.empresa?.fotoUrl) || "/default-avatar.png"}
+              alt="Foto de perfil"
+              className="foto-perfil"
                     style={{
                       width: 40,
                       height: 40,
