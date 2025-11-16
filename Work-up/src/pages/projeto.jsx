@@ -7,7 +7,6 @@ import LoginCard from "../components/LoginCard";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { FaFolder, FaClipboardList, FaCalendarAlt, FaClock } from "react-icons/fa";
 
-// Lista de tags para o Multi-Select (usaremos para o filtro também)
 const LINGUAGENS_OPTIONS = [
     "JavaScript", "Python", "Java", "C#", "C++", "React", "Angular", 
     "Vue.js", "Node.js", "Spring Boot", "SQL", "MongoDB", "AWS", "Docker"
@@ -17,10 +16,10 @@ const LINGUAGENS_OPTIONS = [
 export default function ProjetosList() {
     const [projetos, setProjetos] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [modalProjeto, setModalProjeto] = useState(null); // projeto selecionado no modal
-    const [showLogin, setShowLogin] = useState(false); // 🚩 Modal de login
-    const [showConfirmDialog, setShowConfirmDialog] = useState(false); // 🚩 Modal de confirmação
-    const [projetoToCancel, setProjetoToCancel] = useState(null); // Projeto a ser cancelado
+    const [modalProjeto, setModalProjeto] = useState(null);
+    const [showLogin, setShowLogin] = useState(false);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+    const [projetoToCancel, setProjetoToCancel] = useState(null);
 
     
     const [nome, setNome] = useState("");
@@ -30,32 +29,25 @@ export default function ProjetosList() {
     const [dataInicio, setDataInicio] = useState(""); 
     const [dataFim, setDataFim] = useState(""); 
 
-    // Filtros de busca de texto
     const [filtroTexto, setFiltroTexto] = useState(""); 
     
-    // 🚩 NOVOS ESTADOS DE FILTRO
     const [filtroRegime, setFiltroRegime] = useState("TODOS"); 
     const [filtroTag, setFiltroTag] = useState("TODAS"); 
     
-    // Aluno:
     const [modoAluno, setModoAluno] = useState("TODOS"); 
     const [projetosInscritosIds, setProjetosInscritosIds] = useState([]);
     
-    // Toast notifications
     const [toast, setToast] = useState(null);
 
     const baseURL = "/api/projetos";
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
     const role = user?.role || "";
-
-    // Função utilitária para converter a string de tags em um array limpo
     const parseTagsString = (tagsString) => {
         if (!tagsString || typeof tagsString !== 'string') return [];
         return tagsString.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
     };
     
-    // 🔹 Função utilitária para criar um objeto Date robusto
     const parseDate = (dateData) => {
         if (!dateData) return null;
         
@@ -70,7 +62,6 @@ export default function ProjetosList() {
         return date;
     }
 
-    // 🔹 Lógica de Duração
     const getDurationInMonths = (start, end) => {
         if (!start || !end) return "N/I";
         
@@ -88,26 +79,20 @@ export default function ProjetosList() {
         return `${diffMonths} meses`;
     }
 
-    // Função para gerar a classe CSS (corrigida)
     const generateTagClassName = (tag) => {
-        // Caso especial para C++ para evitar falhas na regex do ambiente
         if (tag === "C++") {
             return "tag-c-plus-plus"; 
         }
         
-        // Lógica para todas as outras tags (garantindo o alinhamento com o CSS)
         return `tag-${tag
             .replace(/\s/g, '-')
-            .replace(/\+\+/g, 'plus-plus') // Corrigido o problema do escape na Regex
-            .replace(/\#/g, 'sharp') // Trata o C#
-            .replace(/\./g, '-') // Trata Vue.js, Node.js e Spring Boot
+            .replace(/\+\+/g, 'plus-plus')
+            .replace(/\#/g, 'sharp')
+            .replace(/\./g, '-')
             .toLowerCase()
         }`;
     }
     
-
-
-    // Função para buscar projetos e inscrições do aluno
     const fetchProjetos = async () => {
         try {
             let url = `${baseURL}/public`;
@@ -132,7 +117,6 @@ export default function ProjetosList() {
 
             const res = await api.get(url, config);
             
-            // Busca a lista de IDs inscritos para desabilitar o botão 'Inscrever-se' (modo TODOS)
             if (role === "ROLE_ALUNO" && token) {
                 const inscricoesRes = await api.get(`${baseURL}/inscricoes`, 
                     { headers: { Authorization: `Bearer ${token}` } });
@@ -158,7 +142,6 @@ export default function ProjetosList() {
                     dataInicio: p.dataInicio, 
                     dataFim: p.dataFim,
                     
-                    // Mapeia o status e a contagem se disponíveis
                     statusInscricao: isFetchingInscricoes ? p.status : undefined,
                     totalCandidatos: isFetchingMeusProjetos ? p.totalCandidatos : 0,
                     aprovados: isFetchingMeusProjetos ? p.aprovados : 0,
@@ -175,12 +158,10 @@ export default function ProjetosList() {
         }
     };
 
-    // 🔹 Buscar projetos ao montar e quando role/token/modoAluno mudar
     useEffect(() => {
         fetchProjetos();
     }, [role, token, modoAluno]);
 
-    // 🔹 Limpar o formulário (útil ao fechar/criar)
     const resetForm = () => {
         setNome("");
         setDescricao("");
@@ -190,7 +171,6 @@ export default function ProjetosList() {
         setDataFim("");
     };
 
-    // 🔹 Criar projeto
     const handleCreateProject = async (e) => {
         e.preventDefault();
         if (!nome || !descricao || !dataInicio || !dataFim || tags.length === 0) {
@@ -239,7 +219,6 @@ export default function ProjetosList() {
         }
     };
     
-    // 🔹 Manipulador para Checkbox de Tags (Criação)
     const handleTagChange = (e) => {
         const value = e.target.value;
         const isChecked = e.target.checked;
@@ -253,8 +232,6 @@ export default function ProjetosList() {
         });
     };
     
-    
-    // 🔹 Encerrar projeto
     const handleEncerrarProjeto = async (id) => {
         if (!window.confirm("Tem certeza que deseja encerrar este projeto?")) return;
 
@@ -274,10 +251,9 @@ export default function ProjetosList() {
         }
     };
 
-    // 🔹 Inscrever-se em projeto
     const handleInscrever = async (projetoId) => {
         if (!token) {
-        setShowLogin(true); // 🚩 Abre login se não estiver logado
+        setShowLogin(true);
         return;
         }
         try {
@@ -304,13 +280,11 @@ export default function ProjetosList() {
         }
     };
 
-    // 🔹 Cancelar inscrição em projeto 
     const handleCancelRegistration = (projetoId) => {
         setProjetoToCancel(projetoId);
         setShowConfirmDialog(true);
     };
 
-    // 🔹 Confirmar cancelamento de inscrição
     const confirmCancelRegistration = async () => {
         try {
             await api.delete(
@@ -340,13 +314,11 @@ export default function ProjetosList() {
         }
     };
 
-    // 🔹 Cancelar diálogo de confirmação
     const cancelDialog = () => {
         setShowConfirmDialog(false);
         setProjetoToCancel(null);
     };
 
-    // 🔹 LÓGICA DE ORDENAÇÃO E FILTRAGEM
     const projetosOrdenados = [...projetos].sort((a, b) => {
         const dateA = parseDate(a.dataCriacao);
         const dateB = parseDate(b.dataCriacao);
@@ -372,11 +344,6 @@ export default function ProjetosList() {
         return matchesTexto && matchesRegime && matchesTag;
     });
 
-
-    // =========================================================================
-    // RENDER
-    // =========================================================================
-
     return (
         <>
             <div className="container page-projetos">
@@ -389,7 +356,6 @@ export default function ProjetosList() {
                         }
                     </h1>
                     <div className="actions">
-                        {/* Botão de alternância para o ALUNO */}
                         {role === "ROLE_ALUNO" && (
                             <button
                                 className={`meus-projetos-btn ${modoAluno === 'INSCRITOS' ? 'active' : ''}`}
@@ -401,7 +367,7 @@ export default function ProjetosList() {
                             </button>
                         )}
 
-                        {/* 🚩 BOTÃO: DASHBOARD CANDIDATOS (Apenas Empresa) */}
+                        {/* DASHBOARD CANDIDATOS (Apenas Empresa) */}
                         {role === "ROLE_EMPRESA" && (
                             <a 
                                 href="/dashboard" 
@@ -424,7 +390,7 @@ export default function ProjetosList() {
                     </div>
                 </div>
 
-                {/* 🚩 SEÇÃO DE FILTROS */}
+                {/* SEÇÃO DE FILTROS */}
                 <div className="filter-controls-bar">
                     <input
                         className="search-input"
@@ -518,13 +484,11 @@ export default function ProjetosList() {
                                     {/* Lógica do Botão para ALUNO (Inscrever / Inscrito / Cancelar) */}
                                         {!p.encerrado && (role === "ROLE_ALUNO" || !token) && (                                        <>
                                             {modoAluno === "INSCRITOS" ? (
-                                                // BLOCO CORRIGIDO PARA EXIBIR O STATUS DA INSCRIÇÃO
                                                 <div className="status-and-action">
                                                     <span className={`status-tag status-${(p.statusInscricao || 'PENDENTE').toLowerCase()}`}>
                                                         {p.statusInscricao || 'PENDENTE'}
                                                     </span>
                                                     
-                                                    {/* SÓ MOSTRA O BOTÃO DE CANCELAR SE ESTIVER PENDENTE */}
                                                     {p.statusInscricao === 'PENDENTE' && (
                                                         <button
                                                             className="cancelar-inscricao-btn"
@@ -563,7 +527,6 @@ export default function ProjetosList() {
                         <p className="sem-projetos">Nenhum projeto encontrado</p>
                     )}
                 </div>
-                      {/* 🚩 Modal de Login (para usuários deslogados) */}
                 {showLogin && (
                     <div className="modal-overlay" onClick={() => setShowLogin(false)}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -578,7 +541,6 @@ export default function ProjetosList() {
                     </div>
                     </div>
                 )}
-                {/* MODAL DE DESCRIÇÃO COMPLETA */}
                 {modalProjeto && (
                     <div className="modal-overlay" onClick={() => setModalProjeto(null)}>
                         <div
@@ -684,9 +646,7 @@ export default function ProjetosList() {
 
                                 <div className="form-group-tags">
                                     <label>Tags / Linguagens de Programação:</label>
-                                    {/* 🚩 SUBSTITUÍDO: Multi-Select por Checkboxes */}
                                     <div className="tag-checkbox-group">
-                                        {/* Para o modal de criação, use input[type="checkbox"] no lugar do select */}
                                         {LINGUAGENS_OPTIONS.map(lang => (
                                             <label key={lang} className="tag-checkbox-label">
                                                 <input

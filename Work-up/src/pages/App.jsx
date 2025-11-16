@@ -1,5 +1,3 @@
-// src/pages/App.jsx
-import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";

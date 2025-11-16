@@ -5,7 +5,6 @@ import Toast from "../components/Toast";
 import logo from "../assets/IMG/Work-UP_logo-Principal.png";
 import { Menu, X } from "lucide-react";
 
-// Defina a breakpoint do CSS como uma constante para uso no JS
 const MOBILE_BREAKPOINT = 880;
 
 export default function Navbar() {
@@ -24,7 +23,6 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      // Fecha o dropdown de desktop
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setMenuOpen(false);
       }
@@ -39,13 +37,10 @@ export default function Navbar() {
   
   const handleToggleMenu = (e) => {
     e.stopPropagation();
-    // Verifica a largura da tela para decidir qual menu abrir/fechar
     if (window.innerWidth <= MOBILE_BREAKPOINT) {
         setMobileOpen(v => !v);
         setMenuOpen(false);
     } else {
-        // Para desktop, o toggle do botão principal não é usado, o clique é no avatar
-        // Este toggle é apenas para o botão hamburguer (que some em desktop)
     }
   }
 
@@ -64,7 +59,6 @@ export default function Navbar() {
     window.location.reload(); 
   };
 
-  // Funções utilitárias para renderização condicional no menu principal
   const isMobileView = window.innerWidth <= MOBILE_BREAKPOINT;
 
   return (
@@ -85,13 +79,11 @@ export default function Navbar() {
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
 
-          {/* 🚩 CORREÇÃO APLICADA: Links do usuário logado só aparecem se for mobile */}
           <nav className={`menu ${mobileOpen ? 'menu--open' : ''}`} aria-label="Menu Principal">
             <a href="/" onClick={closeMobileMenu}>Início</a>
             <a href="/eventos" onClick={closeMobileMenu}>Eventos</a>
             <a href="/projetos" onClick={closeMobileMenu}>Projetos</a>
             
-            {/* Somente renderiza Perfis e Sair no menu principal SE for mobile E estiver logado */}
             {user && isMobileView && (
               <>
                 <div className="mobile-divider" style={{ borderTop: '1px solid rgba(0,0,0,0.1)', margin: '5px 0', width: '100%' }}></div>
@@ -132,7 +124,7 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              // MENU DROPDOWN (Visível apenas no Desktop/Telas maiores)
+              // MENU DROPDOWN
               <div className="user-menu" ref={dropdownRef}>
                 <div
                   className="user-info"
@@ -154,7 +146,6 @@ export default function Navbar() {
                     border: "2px solid #3298EF", 
                   }}
                   />
-                  {/* Ícone para o dropdown de DESKTOP (se o mobile não estiver aberto) */}
                   {!mobileOpen && (menuOpen ? <X size={24} /> : <Menu size={24} />)}
                 </div>
 
@@ -176,7 +167,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* MODAIS (mantidos) */}
+      {/* MODAIS*/}
       {showCadastro && (
         <div className="modal-overlay" onClick={() => setShowCadastro(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>

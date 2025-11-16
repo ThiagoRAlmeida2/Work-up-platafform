@@ -1,9 +1,6 @@
-// src/components/Hero.jsx
-import React from 'react'
 import Carousel from '../components/Carrossel.jsx'
 import '../css/Hero.css'
 
-// IMPORTAÇÕES DE IMAGEM MANTIDAS
 import appspagamentoImg from '../assets/IMG/appspagamento.png';
 import kairosImg from '../assets/IMG/Kairos-techevent.png';
 import ecommerceImg from '../assets/IMG/e-commerce-moda.png';
@@ -29,7 +26,6 @@ export default function Hero({ onCadastroClick }){
     <section className="hero">
         <div className="hero__content-grid">
             
-            {/* SOBRE NÓS - Coluna 1 */}
             <div className="hero__about">
                 <h1 className="about__title">Pratique o Futuro da Tecnologia. Hoje.</h1>
                 <p className="about__subtitle">
@@ -45,7 +41,6 @@ export default function Hero({ onCadastroClick }){
                 </div>
             </div>
 
-            {/* CARROSSEL - Coluna 2 */}
             <div className="hero__carousel-wrapper">
                 <Carousel title="Projetos em Destaque" items={items} />
             </div>

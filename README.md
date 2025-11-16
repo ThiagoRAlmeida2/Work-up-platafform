@@ -1,4 +1,4 @@
-# [ROCKET] Project Kairos: Plataforma de Conexão Universidade-Empresa
+# [ROCKET] work-up: Plataforma de Conexão Universidade-Empresa
 
 Este projeto é uma aplicação *full-stack* desenvolvida para conectar alunos e empresas em projetos práticos, utilizando **React.js (Vite)** no frontend e **Spring Boot (Java)** no backend, com persistência de dados gerenciada pelo **MySQL**.
 
@@ -25,6 +25,7 @@ Este projeto é uma aplicação *full-stack* desenvolvida para conectar alunos e
 ![Vercel](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)
 ![Render](https://img.shields.io/badge/Backend-Render-purple?logo=render)
 ![Railway](https://img.shields.io/badge/Database-Railway-0B0D0E?logo=railway)
+![UptimeRobot](https://img.shields.io/badge/Monitor-UptimeRobot-green?logo=uptimerobot)
 
 ## [DIAMOND] Visão Geral do Stack
 
@@ -80,7 +81,7 @@ Certifique-se de ter o **Java Development Kit (JDK 24+)**, **Maven** e um servid
 Crie um banco de dados vazio:
 
 ```sql
-   CREATE DATABASE kairos_db;
+   CREATE DATABASE work_up_db;
 ```
 
 #### [TOOLS] Configuração do MySQL deploy
@@ -107,7 +108,7 @@ O **Railway** é utilizado para hospedar o banco de dados **MySQL** de forma sim
 3. Ajuste as credenciais do banco de dados conforme seu ambiente:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/kairos_db
+spring.datasource.url=jdbc:mysql://localhost:3306/work_up_bd
 spring.datasource.username=seu_usuario_mysql
 spring.datasource.password=sua_senha_mysql
 spring.jpa.hibernate.ddl-auto=update  # Permite que o Hibernate crie as tabelas
@@ -134,7 +135,7 @@ O backend deverá iniciar na porta **8081** (ou conforme configurado).
 - **FAZER FORK:** Se você pretende contribuir:
 
   ```bash
-  git clone https://github.com/ThiagoRAlmeida2/Project-Kairos
+  git clone https://github.com/ThiagoRAlmeida2/Work-up-platafform.git
   ```
 
 - **CLONAR:** Caso contrário, clone o repositório principal.
@@ -142,7 +143,7 @@ O backend deverá iniciar na porta **8081** (ou conforme configurado).
 #### [FOLDER] Acesse a pasta do frontend
 
 ```bash
-cd Project-Kairos
+cd Work-up
 ```
 
 #### [PACKAGE] Instale as dependências
@@ -175,7 +176,7 @@ Aguardar a inicialização da API
 
 ### Após ela terminar de inicializar pode acessar o front end pelo link
 
-[https://project-kairos-wine.vercel.app](https://project-kairos-wine.vercel.app)
+[https://work-up-platform.vercel.app](https://work-up-platform.vercel.app)
 pp
 
 ---
@@ -213,6 +214,7 @@ const baseURL = import.meta.env.VITE_API_BASE_URL
 - **Spring Security:** segurança da API.
 - **Lombok:** redução de boilerplate no backend.
 - **TailwindCSS:** design responsivo e moderno.
+- **UptimeRobot:** Serviço de monitoramento para "keep-alive" da API no Render (evitando o *spin down* do plano gratuito).
 
 ---
 

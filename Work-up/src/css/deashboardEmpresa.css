@@ -1,5 +1,3 @@
-/* src/css/empresa-dashboard.css (CÓDIGO COMPLETO E MODERNO - FINAL 3.0 - SCROLL CONTROLADO) */
-
 :root {
      --primary-color: #312e81;
      --secondary-color: #3298EF;
@@ -17,9 +15,6 @@
      --gradient-blue: linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #111827 100%);
 }
 
-/* ================================================= */
-/* 1. ESTRUTURA E TÍTULO               */
-/* ================================================= */
 
 .dashboard-container {
     padding: 80px 50px; 
@@ -53,7 +48,6 @@
     align-self: flex-start; 
 }
 
-/* Botão Voltar (Estilo clean e com sombra sutil) */
 .btn-voltar-projetos {
     background: var(--card-bg);
     color: var(--text-dark);
@@ -76,9 +70,6 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
 }
-/* ================================================= */
-/* 2. TABELA E ESTILOS GERAIS          */
-/* ================================================= */
 
 .dashboard-table-wrapper {
     overflow: hidden; 
@@ -97,7 +88,6 @@
     min-width: 900px; 
 }
 
-/* 🚩 NOVO: Aplica o fundo e arredondamento principal ao THEAD */
 .candidatos-table thead { 
     background: var(--gradient-blue);
     color: white;
@@ -107,7 +97,7 @@
     padding: 18px 25px; 
     text-align: left;
     border: none; 
-    vertical-align: middle; /* Alinha verticalmente o conteúdo das células */
+    vertical-align: middle;
 }
 
 .candidatos-table td {
@@ -140,7 +130,6 @@
     border-bottom: none;
 }
 
-/* Estilo do link do aluno */
 .aluno-link {
     color: var(--primary-color);
     font-weight: 700;
@@ -154,7 +143,6 @@
     text-decoration: underline;
 }
 
-/* Botões de Ação na Tabela */
 .action-buttons {
 
     align-items: center; 
@@ -199,14 +187,9 @@
     font-style: italic;
     color: var(--text-medium);
     font-size: 0.9em;
-    display: inline-flex; /* 🛠️ ADICIONADO: Trata o span como inline-flex para consistência com botões */
-    align-items: center; /* Alinha verticalmente o texto */
+    display: inline-flex;
+    align-items: center; 
 }
-
-
-/* ------------------------------------------- */
-/* --- ESTILOS DE STATUS NA TABELA E GERAL --- */
-/* ------------------------------------------- */
 
 .status-text {
     font-weight: 700;
@@ -224,25 +207,17 @@
     color: var(--danger-color);
 }
 
-
-/* ================================================= */
-/* 3. ESTILO DO MODAL DE PERFIL (SCROLL CONTROLADO)*/
-/* ================================================= */
-
 .modal-content.profile-modal {
     max-width: 850px; 
     width: 95%; 
-    
-    /* 🛠️ AJUSTE PARA O MODAL PRINCIPAL: Define altura máxima e layout flexível */
     max-height: 90vh; 
-    overflow: hidden; /* Garante que o container principal não tenha scroll */
-    
+    overflow: hidden;
     padding: 50px;
     border-radius: 20px; 
     box-shadow: var(--shadow-main);
     background: var(--card-bg);
     display: flex;
-    flex-direction: column; /* Necessário para o corpo ocupar o espaço restante */
+    flex-direction: column;
 }
 
 .modal-title {
@@ -252,28 +227,23 @@
     border-bottom: 4px solid var(--secondary-color); 
     padding-bottom: 15px;
     margin-bottom: 35px;
-    flex-shrink: 0; /* Impede que o título encolha */
+    flex-shrink: 0;
 }
 
-/* 🛠️ AJUSTE: O CORPO DO CONTEÚDO AGORA CONTROLA O SCROLL */
 .perfil-detalhe-body {
     display: grid;
     grid-template-columns: 2fr 3fr; 
     gap: 40px;
-    
-    /* Permite que o corpo ocupe o espaço restante (entre título e botão) */
     flex-grow: 1; 
-    overflow-y: auto; /* SCROLL REINTRODUZIDO AQUI! */
-    padding-right: 20px; /* Espaço para a barra de rolagem */
-    margin-right: -20px; /* Contrapeso para o padding, para o modal manter a largura total */
+    overflow-y: auto;
+    padding-right: 20px;
+    margin-right: -20px;
 }
 
-/* Colunas de Detalhes Básicos (Esquerda) */
 .detalhe-coluna-info {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    /* Mantido: Estilo de separador base */
     border-right: 1px solid #eee; 
     padding-right: 40px;
 }
@@ -298,7 +268,6 @@
     gap: 8px;
 }
 
-/* Caixa de descrição */
 .detalhe-campo p {
     margin: 0;
     color: var(--text-dark);
@@ -308,21 +277,19 @@
     border-radius: 12px;
     border: 1px solid var(--border-color);
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); 
-    
-    /* 🛠️ CORREÇÃO: Remove a limitação de altura e overflow para que o texto apareça todo */
     max-height: none; 
     overflow: visible; 
     text-overflow: clip; 
-    white-space: pre-wrap; /* Permite quebras de linha */
+    white-space: pre-wrap;
 }
 
-/* Tags List */
 .tags-list {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 5px;
 }
+
 .tag-chip {
     padding: 7px 14px;
     border-radius: 25px; 
@@ -334,7 +301,6 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Lista de Projetos Participados */
 .projetos-participados-lista {
     list-style: none;
     padding: 0;
@@ -342,8 +308,6 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    
-    /* 🛠️ CORREÇÃO: Remove a limitação de altura para que a lista apareça toda, o scroll é controlado pelo body */
     max-height: none; 
     overflow: visible; 
 }
@@ -379,7 +343,7 @@
     float: right;
     transition: background 0.2s;
     box-shadow: var(--shadow-soft);
-    flex-shrink: 0; /* Impede que o botão encolha */
+    flex-shrink: 0;
 }
 
 .btn-fechar-modal:hover {
@@ -397,8 +361,6 @@
   }
 }
 
-/* --- ESTILOS AUXILIARES --- */
-
 .loading-spinner {
     animation: spin 1.5s linear infinite;
     margin-right: 10px;
@@ -413,11 +375,6 @@
     padding-top: 100px;
 }
 
-
-/* ================================================= */
-/* 4. RESPONSIVIDADE                 */
-/* ================================================= */
-
 @media (min-width: 600px) {
     .dashboard-header-controls {
         flex-direction: row;
@@ -430,16 +387,12 @@
     .dashboard-container {
         padding: 50px 24px;
     }
-    /* Passa para coluna única */
     .perfil-detalhe-body {
         grid-template-columns: 1fr; 
         gap: 20px;
-        
-        /* 🛠️ AJUSTE PARA O SCROLL: Remove o padding right no mobile para evitar barra dupla */
         padding-right: 0; 
         margin-right: 0;
     }
-    /* Remove a borda direita e adiciona borda inferior no primeiro bloco */
     .detalhe-coluna-info {
         border-right: none;
         padding-right: 0;

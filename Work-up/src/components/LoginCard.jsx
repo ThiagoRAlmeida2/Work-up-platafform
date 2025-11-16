@@ -13,17 +13,14 @@ export default function LoginCard({ onLoginSuccess, onClose, onShowToast }) {
   const [alert, setAlert] = useState("");
   const [resetMode, setResetMode] = useState(false);
 
-  // 🔹 Atualiza campos de login
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 🔹 Atualiza campos de reset
   const handleResetChange = (e) => {
     setResetData({ ...resetData, [e.target.name]: e.target.value });
   };
 
-  // 🔹 LOGIN
   const handleSubmit = async (e) => {
   e.preventDefault();
   try {
@@ -41,7 +38,6 @@ export default function LoginCard({ onLoginSuccess, onClose, onShowToast }) {
     else setAlert(msg);
   }
 };
-  // 🔹 RESET DE SENHA
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
@@ -58,12 +54,10 @@ export default function LoginCard({ onLoginSuccess, onClose, onShowToast }) {
         novaSenha: resetData.novaSenha,
       });
 
-      // ✅ Exibe mensagem de sucesso
       const successMsg = res.data || "Senha redefinida com sucesso!";
       if (onShowToast) onShowToast({ message: successMsg, type: 'success' });
       else setAlert(successMsg);
 
-      // ✅ Volta ao modo login após 2 segundos
       setTimeout(() => {
         setResetMode(false);
         setAlert("");

@@ -1,5 +1,3 @@
-import React from 'react'
-
 function Step({ index, title, desc }) {
   return (
     <div className="step">
@@ -13,7 +11,6 @@ function Step({ index, title, desc }) {
 }
 
 export default function HowItWorks({ onCadastroClick }) {
-  // Função para abrir o modal de cadastro
   const handleInterestClick = (e) => {
     e.preventDefault();
     console.log('Botão cadastre-se clicado', onCadastroClick);

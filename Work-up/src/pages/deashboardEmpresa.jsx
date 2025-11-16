@@ -1,21 +1,13 @@
-// src/pages/deashboardEmpresa.jsx 
-
 import React, { useState, useEffect } from "react";
 import api from "../service/api";
-// Importei FaCheckCircle e FaTimesCircle para um visual melhor no status concluído
 import { FaUser, FaCheck, FaTimes, FaSync, FaProjectDiagram, FaArrowLeft, FaCheckCircle, FaTimesCircle } from "react-icons/fa"; 
 import Toast from "../components/Toast";
 import { useNavigate } from 'react-router-dom'; 
 import "../css/deashboardEmpresa.css"; 
 
-
-// -----------------------------------------------------
-// FUNÇÕES UTILS (Para visualização no modal - Reintroduzidas aqui)
-// -----------------------------------------------------
 const parseTagsString = (tagsString) => tagsString?.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) || [];
 const getTagClassName = (tag) => `tag-chip tag-${tag.replace(/\s|#/g, '-').replace(/\+\+/g, 'plus-plus').replace(/\./g, '')}`;
 
-// Função parseDate (para datas do Java LocalDate)
 const parseDate = (dateData) => {
     if (!dateData) return null;
     if (Array.isArray(dateData) && dateData.length >= 3) {
@@ -28,10 +20,6 @@ const parseDate = (dateData) => {
     return date;
 }
 
-
-// -----------------------------------------------------
-// 🔹 COMPONENTE MODAL DE PERFIL DETALHADO
-// -----------------------------------------------------
 const PerfilAlunoModal = ({ alunoId, onClose }) => {
     const [perfil, setPerfil] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -76,7 +64,6 @@ const PerfilAlunoModal = ({ alunoId, onClose }) => {
                                 </div>
                             </div>
                             
-                            {/* Coluna 2: Tags e Projetos */}
                             <div className="detalhe-coluna-tags">
                                 {/* Tags */}
                                 <div className="detalhe-campo">
@@ -113,10 +100,6 @@ const PerfilAlunoModal = ({ alunoId, onClose }) => {
     );
 };
 
-
-// -----------------------------------------------------
-// 🔹 COMPONENTE PRINCIPAL DO DASHBOARD
-// -----------------------------------------------------
 export default function EmpresaDashboard() {
     const navigate = useNavigate(); 
     
@@ -153,14 +136,11 @@ export default function EmpresaDashboard() {
         const action = actionType.toLowerCase(); 
         const endpoint = `${baseURL}/inscricao/${inscricaoId}/${action}`;
 
-        // Determina o status final esperado no frontend (APROVADO ou REJEITADO)
         let finalStatus;
         if (action === 'aprovar') {
-            finalStatus = 'APROVADO'; // Garante que o status seja APROVADO, não APROVAR
+            finalStatus = 'APROVADO';
         } else if (action === 'rejeitar') {
-            finalStatus = 'REJEITADO'; // Garante que o status seja REJEITADO
-        } else {
-             // Fallback
+            finalStatus = 'REJEITADO';
              finalStatus = actionType.toUpperCase();
         }
 
@@ -168,8 +148,6 @@ export default function EmpresaDashboard() {
             await api.post(endpoint, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-
-            // ATUALIZA O STATUS NA TABELA NO FRONTEND com o status final correto
             setCandidatos(cands => cands.map(c => 
                 c.inscricaoId === inscricaoId ? {...c, status: finalStatus} : c
             ));
@@ -215,11 +193,8 @@ export default function EmpresaDashboard() {
                         </thead>
                         <tbody>
                             {candidatos.map((c) => (
-                                // Usando inscricaoId como key para o <tr>
                                 <tr key={c.inscricaoId}> 
-                                    {/* CORREÇÃO 1: Removendo o aluno-link da TD e tratando o clique. */}
                                     <td onClick={() => setAlunoSelecionadoId(c.alunoId)}>
-                                        {/* CORREÇÃO 2: Aplicando a classe aluno-link em um DIV interno para manter o layout da TD */}
                                         <div className="aluno-link" style={{cursor: 'pointer'}}>
                                             <FaUser size={14} style={{marginRight: '8px'}} />
                                             {c.alunoNome} 

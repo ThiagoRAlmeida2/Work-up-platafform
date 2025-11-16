@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react'
 import '../css/Carrossel.css'
 
 export default function Carousel({ title = 'Projetos em Destaque', items = [] }) {
@@ -7,15 +6,13 @@ export default function Carousel({ title = 'Projetos em Destaque', items = [] })
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Inicia o fade out
       setFadeClass('fade-out')
 
-      // Após a transição, atualiza o índice e inicia o fade in
       setTimeout(() => {
         setCurrentIndex(prev => (prev + 1) % items.length)
         setFadeClass('fade-in')
-      }, 500) // Tempo da transição de fade out
-    }, 4000) // Tempo total de exibição de cada slide
+      }, 500)
+    }, 4000)
 
     return () => clearInterval(interval)
   }, [items.length])

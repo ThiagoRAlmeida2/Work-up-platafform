@@ -1,9 +1,4 @@
-/* ======================================= */
-/* ESTILOS MODERNOS PARA PROJETOS.CSS (CORRIGIDO PARA ALTURA VARIÁVEL) */
-/* ======================================= */
-
 :root {
-  /* Paleta de Cores */
   --primary-color: #3298EF; 
   --secondary-color: #3298EF; 
   --background-light: #f1f5f9;
@@ -14,12 +9,10 @@
   --shadow-subtle: rgba(30, 41, 59, 0.1);
   --gradient-main: linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #111827 100%);
   
-  /* Cores de Status */
   --color-success: #2ecc71;
   --color-warning: #f1c40f;
   --color-danger: #e74c3c;
   
-  /* Paleta de Tags Coloridas (Ghost Button) - TUDO MINÚSCULO E CONSISTENTE */
   --tag-javascript: #f7df1e;
   --tag-python: #306998;
   --tag-java: #e04a4f;
@@ -50,7 +43,6 @@ body {
 }
 
 
-/* --- TOPO --- */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -72,7 +64,6 @@ body {
   gap: 15px;
 }
 
-/* 🚩 NOVO BLOCO: Estilos para a Barra de Filtros (Texto e Selects) */
 .filter-controls-bar {
     display: flex;
     gap: 15px;
@@ -115,8 +106,6 @@ body {
   outline: none;
   box-shadow: 0 0 10px rgba(50, 152, 239, 0.4);
 }
-
-/* --- ESTILO DOS BOTÕES --- */
 
 .criar-projeto-btn, .salvar-btn {
   background: linear-gradient(90deg, #3298EF, #0078D1);
@@ -183,7 +172,6 @@ body {
   border-radius: 10px;
 }
 
-/* --- LISTA DE PROJETOS GRID --- */
 .lista-projetos-grid { 
   display: grid;
   gap: 30px;
@@ -204,7 +192,6 @@ body {
 }
 
 
-/* --- CARD DE PROJETO (REFINADO) --- */
 .project-card {
   background: var(--card-bg);
   padding: 28px;
@@ -213,7 +200,6 @@ body {
   border: 1px solid #eee;
   border-left: 6px solid var(--secondary-color);
   transition: all 0.3s ease;
-  /* 🚩 REMOVIDO: height: 100%; para permitir que a altura varie */
   display: flex;
   flex-direction: column;
 }
@@ -251,8 +237,6 @@ body {
   line-height: 1.2;
 }
 
-/* --- ESTILO ADICIONAL: Título do Projeto no Card --- */
-
 .project-title-link {
     font-size: 1.5rem;
     font-weight: 900;
@@ -262,7 +246,6 @@ body {
     cursor: pointer;
 }
 
-/* Efeito sutil ao passar o mouse para dar vida ao nome */
 .project-card:hover .project-title-link {
     filter: brightness(1.2);
     transform: scale(1.02);
@@ -274,7 +257,6 @@ body {
     align-items: center;
 }
 
-/* Status Regime (PJ/CLT) */
 .status-regime {
     display: inline-block;
     padding: 4px 10px;
@@ -294,7 +276,6 @@ body {
     color: #155724;
 }
 
-/* Informações de Duração */
 .card-info-group {
     display: flex;
     justify-content: space-between;
@@ -310,10 +291,6 @@ body {
     align-items: center;
     gap: 5px;
 }
-
-/* -------------------------------------- */
-/* Tags de Linguagens - Estilo GHOST BUTTON */
-/* -------------------------------------- */
 
 .tags-list {
     margin-top: 10px;
@@ -332,13 +309,10 @@ body {
     white-space: nowrap;
     transition: all 0.2s ease;
     cursor: default; 
-    
-    /* Estilo Ghost Button Base */
     background-color: transparent;
     border: 2px solid; 
 }
 
-/* Mapeamento de Cores para as Classes Geradas pelo JS (Estado Não Selecionado) */
 .tag-javascript {
     color: var(--tag-javascript);
     border-color: var(--tag-javascript);
@@ -400,18 +374,16 @@ body {
     background-color: rgba(0, 0, 0, 0.05); /* Sutil hover */
 }
 
-/* Descrição */
 .descricao-resumida {
   color: var(--text-medium);
   line-height: 1.5;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* número de linhas exibidas */
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
 }
 
-/* --- MODAL DE INSCRIÇÃO --- */
 .modal-inscricao-overlay {
   position: fixed;
   top: 0;
@@ -487,7 +459,6 @@ body {
   background: #c0392b;
 }
 
-/* --- FOOTER E BOTÕES DE AÇÃO --- */
 .project-footer {
   margin-top: auto; 
   padding-top: 15px;
@@ -560,7 +531,6 @@ body {
 }
 
 .cancelar-inscricao-btn {
-    /* Manter cores de alerta/perigo */
     background-color: var(--color-danger); 
     border: none;
     color: white; 
@@ -591,9 +561,6 @@ body {
     padding: 50px 0;
     font-style: italic;
 }
-
-
-/* --- MODAL (CRIAÇÃO) --- */
 
 .modal-overlay {
   position: fixed;
@@ -635,7 +602,6 @@ body {
     gap: 15px;
 }
 
-/* 🚩 CORREÇÃO APLICADA: Unificando o estilo para campos de texto, textarea e datas */
 .create-project-form input:not([type="radio"]):not([type="checkbox"]), 
 .create-project-form textarea,
 .create-project-form .multi-select-tags {
@@ -761,10 +727,8 @@ body {
   }
 }
 
-/* --- RESPONSIVIDADE --- */
 @media (max-width: 1000px) {
     .lista-projetos-grid {
-        /* Ajustado para 3 colunas em telas maiores que 768px */
         grid-template-columns: repeat(3, 1fr);
     }
 }
@@ -819,7 +783,6 @@ body {
     }
 }
 
-/* --- ESTILOS ADICIONAIS --- */
 .btn-candidatos-dashboard {
   background: var(--card-bg); 
   color: var(--primary-color);
@@ -851,12 +814,10 @@ body {
     margin-top: 10px;
 }
 
-/* Garante que o botão de cancelar fique alinhado */
 .status-and-action .cancelar-inscricao-btn {
     margin-top: 0; 
 }
 
-/* Estilos de cor de status */
 .status-tag {
     display: inline-block;
     padding: 4px 10px;
@@ -889,7 +850,7 @@ body {
 .tag-checkbox-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px; /* Espaço entre as tags */
+    gap: 10px;
     margin-top: 10px;
     padding: 10px;
     border: 1px solid #3298EF;
@@ -906,44 +867,34 @@ body {
 }
 
 .tag-checkbox-label input[type="checkbox"] {
-    /* Esconde o checkbox nativo */
     display: none;
 }
 
-/* Reutilizando o estilo da tag-chip como o visual do checkbox */
 .tag-checkbox-label .tag-chip {
     padding: 7px 15px;
     border-radius: 20px;
     font-size: 0.85em;
     font-weight: 700;
     transition: all 0.2s ease;
-    border-width: 2px; /* Mante a borda original do tag-chip */
+    border-width: 2px;
     background-color: transparent;
     opacity: 0.8;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-/* Efeito Hover e Foco */
 .tag-checkbox-label:hover .tag-chip {
     opacity: 1;
     transform: translateY(-1px);
 }
 
-/* 🚩 CORREÇÕES FINAIS APLICADAS: Solução de MÁXIMA ESPECIFICIDADE PARA FUNDO E TEXTO */
-
-/* Estilo Base para Checked (Define Textura e Sombra) */
 .tag-checkbox-label input[type="checkbox"]:checked + .tag-chip {
     opacity: 1;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* 1. REGRA GERAL FORTE DE TEXTO: Força o texto para ESCURO (para tags claras) */
 .tag-checkbox-label input[type="checkbox"]:checked + .tag-chip {
     color: var(--text-dark) !important;
 }
 
-/* 2. DEFINIÇÃO EXPLÍCITA DE COR DE FUNDO E TEXTO PARA CADA TAG QUANDO CHECADA */
-
-/* TAGS CLARAS (JavaScript, React, AWS, Docker) - Texto Escuro */
 .tag-checkbox-label input[type="checkbox"]:checked + .tag-javascript {
     background-color: var(--tag-javascript) !important;
     border-color: var(--tag-javascript) !important;
@@ -965,7 +916,6 @@ body {
     color: var(--text-dark) !important;
 }
 
-/* TAGS ESCURAS/MÉDIAS (Onde o texto deve ser BRANCO) */
 .tag-checkbox-label input[type="checkbox"]:checked + .tag-python {
     background-color: var(--tag-python) !important;
     border-color: var(--tag-python) !important;
@@ -1017,7 +967,6 @@ body {
     color: var(--card-bg) !important;
 }
 
-/* Estilo para a small text de ajuda */
 .form-group-tags small {
-    margin-top: 10px; /* Ajusta a margem para separar do grupo de tags */
+    margin-top: 10px;
 }

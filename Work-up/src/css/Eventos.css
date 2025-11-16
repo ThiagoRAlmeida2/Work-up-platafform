@@ -1,7 +1,3 @@
-/* ======================================= */
-/* NETFLIX-STYLE EVENTS PAGE              */
-/* ======================================= */
-
 :root {
    --primary-blue: #3298EF;
    --secondary-blue: #3298EF;
@@ -18,14 +14,12 @@
    --shadow-main: 0 4px 20px rgba(0, 0, 0, 0.1);
    --shadow-blue-glow: 0 4px 20px rgba(50, 152, 239, 0.4);
    
-   /* Cores do Dashboard (para a tabela) */
    --success-color: #2ecc71;
    --danger-color: #e74c3c;
    --warning-color: #f1c40f;
    --gradient-blue: linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #111827 100%);
 }
 
-/* Events container */
 .eventos-container {
   background: var(--background-dark);
   color: var(--text-primary);
@@ -34,7 +28,6 @@
   animation: fadeIn 0.6s ease-in-out;
 }
 
-/* Hero Section */
 .eventos-hero {
   background: linear-gradient(135deg, var(--dark-blue) 0%, var(--darker-blue) 50%, var(--darkest) 100%);
   padding: 90px 24px;
@@ -58,12 +51,11 @@
   margin-right: auto;
 }
 
-/* Container para Busca e Botão de Criação - ALINHAMENTO CORRIGIDO */
 .hero-actions-row {
     display: flex;
-    justify-content: center; /* Centraliza o grupo */
+    justify-content: center;
     align-items: center;
-    gap: 20px; /* Distância entre os elementos */
+    gap: 20px;
     margin-top: 2rem;
     max-width: 800px; 
     margin-left: auto;
@@ -73,7 +65,7 @@
 .hero-search {
   display: flex;
   max-width: 500px;
-  margin: 0; /* Removido margin auto */
+  margin: 0;
   gap: 12px;
   flex-shrink: 0;
 }
@@ -112,7 +104,6 @@
    box-shadow: 0 4px 20px rgba(49, 46, 129, 0.4);
 }
 
-/* Estilo do Botão Criar Evento (E "Meus Eventos") */
 .btn-create-event {
     background: var(--primary-blue);
     color: var(--white);
@@ -135,7 +126,6 @@
     box-shadow: 0 6px 20px rgba(50, 152, 239, 0.6);
 }
 
-/* Botão Encerrar no Modal de Detalhes */
 .btn-encerrar {
   background: var(--primary-blue);
     color: var(--white);
@@ -157,7 +147,6 @@
     box-shadow: 0 6px 20px rgba(25, 74, 117, 0.6);
 }
 
-/* Event Categories */
 .event-category {
   padding: 40px 100px;
   background: var(--background-light);
@@ -199,7 +188,6 @@
   border-color: var(--text-primary);
 }
 
-/* Events Container with Arrows */
 .events-container-with-arrows {
   position: relative;
   max-width: 2000px;
@@ -207,7 +195,6 @@
   overflow: hidden;
 }
 
-/* Navigation Arrows */
 .nav-arrow {
   position: absolute;
   top: 50%;
@@ -241,7 +228,6 @@
   right: 5px;
 }
 
-/* Events Row */
 .events-row {
   display: flex;
   gap: 16px;
@@ -250,7 +236,6 @@
   scroll-behavior: smooth;
 }
 
-/* Lista fixa de eventos (componentes reutilizáveis fora do carrossel) */
 .eventos-list {
   max-width: 1400px;
   margin: 0 auto;
@@ -261,7 +246,6 @@
   justify-content: flex-start;
 }
 
-/* Events Row Expanded */
 .events-row.expanded {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -269,7 +253,6 @@
   padding: 0 24px;
 }
 
-/* Hide all scrollbars */
 .events-row::-webkit-scrollbar {
   display: none;
 }
@@ -279,7 +262,6 @@
   scrollbar-width: none;
 }
 
-/* Global scrollbar hiding */
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -289,7 +271,6 @@
   display: none;
 }
 
-/* Event Cards */
 .event-card {
   flex: 0 0 280px;
   background: var(--card-dark);
@@ -362,7 +343,6 @@
   margin: 0;
 }
 
-/* No Results */
 .no-results {
   text-align: center;
   padding: 60px 20px;
@@ -373,10 +353,6 @@
   font-size: 1.1rem;
   margin: 0;
 }
-
-/* ======================================= */
-/* RESPONSIVIDADE                          */
-/* ======================================= */
 
 @media (max-width: 768px) {
   .hero-content h1 {
@@ -504,9 +480,6 @@
   }
 }
 
-
-/* --- Estilos Gerais de Modal --- */
-
 .modal-backdrop {
     position: fixed;
     top: 0;
@@ -545,7 +518,6 @@
   to { opacity: 1; }
 }
 
-/* Ajustes visuais do conteúdo do modal de evento */
 .event-modal-image img {
   width: 100%;
   height: 100%;
@@ -865,11 +837,6 @@
     text-align: right; 
 }
 
-
-/* ======================================= */
-/* AJUSTES DO MODAL DE DETALHES            */
-/* ======================================= */
-
 .event-modal-image {
   position: relative;
   overflow: hidden;
@@ -959,20 +926,12 @@
     }
 }
 
-/* ======================================= */
-/* MELHORIA 1: "MEUS EVENTOS" (ALUNO) - TAMANHO GRANDE */
-/* ======================================= */
-
-/* 1. Estilo do Modal "Meus Eventos" - TAMANHO GRANDE (1100px) */
 .modal-content.my-events-modal {
-    width: min(1100px, 95%); /* <-- Copiado do event-details-modal */
-    max-width: 1100px;       /* <-- Copiado do event-details-modal */
-    max-height: calc(100vh - 80px); /* <-- Copiado do event-details-modal */
-    padding: 28px;           /* <-- Copiado do event-details-modal */
-    
-    border-radius: 10px; /* Restaurado */
-    
-    /* Garante que o conteúdo role internamente */
+    width: min(1100px, 95%);
+    max-width: 1100px;
+    max-height: calc(100vh - 80px);
+    padding: 28px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
 }
@@ -980,11 +939,11 @@
 
 .my-events-modal h2 {
     margin-bottom: 25px;
-    text-align: left; /* Alinha o título à esquerda */
+    text-align: left;
     color: var(--primary-blue);
-    font-size: 2.5rem; /* Título maior */
+    font-size: 2.5rem;
     font-weight: 700;
-    flex-shrink: 0; /* Impede que o título encolha */
+    flex-shrink: 0;
 }
 
 .no-results-modal {
@@ -994,7 +953,6 @@
     font-style: italic;
 }
 
-/* 2. Wrapper da Tabela (para overflow) */
 .my-events-modal .dashboard-table-wrapper {
     overflow: hidden; 
     overflow-x: auto;
@@ -1004,24 +962,20 @@
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    
-    /* ATUALIZADO: Define uma altura máxima para a tabela */
     max-height: 60vh; 
-    overflow-y: auto; /* Adiciona rolagem se a lista for longa */
-    flex-grow: 1; /* Ocupa o espaço disponível */
+    overflow-y: auto;
+    flex-grow: 1;
 }
 
-/* 3. Tabela */
 .my-events-modal .candidatos-table {
     width: 100%;
     border-collapse: collapse; 
-    min-width: 600px; /* Largura mínima para evitar quebra */
+    min-width: 600px;
 }
 
 .my-events-modal .candidatos-table thead { 
     background: var(--gradient-blue);
     color: white;
-    /* Faz o cabeçalho grudar no topo ao rolar */
     position: sticky;
     top: 0;
     z-index: 1;
@@ -1050,14 +1004,12 @@
     border-bottom: none;
 }
 
-/* 4. Célula de Ações */
 .my-events-modal .action-buttons {
     display: flex;
     align-items: center; 
     gap: 10px;
 }
 
-/* 5. Botão de Cancelar (estilo 'declinar' do dashboard) */
 .my-events-modal .btn-declinar {
     padding: 10px 14px;
     border: none;
@@ -1077,7 +1029,6 @@
     background-color: #c0392b;
 }
 
-/* 6. Tag de Status */
 .my-events-modal .status-tag {
     display: inline-block;
     padding: 4px 10px;

@@ -1,17 +1,14 @@
-// src/pages/Perfil.jsx
 import React, { useState, useEffect } from "react";
-import "../css/perfil.css"; // Certifique-se que o CSS está sendo importado
+import "../css/perfil.css";
 import { FaPencilAlt, FaTimes, FaProjectDiagram, FaCalendarAlt, FaFlag, FaBriefcase } from "react-icons/fa"; 
 import api from "../service/api";
 import Toast from "../components/Toast";
 
-// Lista de tags para o Multi-Select (usadas nos checkboxes)
 const LINGUAGENS_OPTIONS = [
     "JavaScript", "Python", "Java", "C#", "C++", "React", "Angular", 
     "Vue.js", "Node.js", "Spring Boot", "SQL", "MongoDB", "AWS", "Docker"
 ];
 
-// Funções utilitárias
 const parseTagsString = (tagsString) => {
     if (!tagsString || typeof tagsString !== 'string') return [];
     return tagsString.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
@@ -31,7 +28,6 @@ const parseDate = (dateData) => {
     return date;
 }
 
-// Componente principal Perfil
 export default function Perfil() {
   const [usuario, setUsuario] = useState(null);
   const [editando, setEditando] = useState(false);
@@ -67,7 +63,6 @@ export default function Perfil() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Sincroniza as alterações de texto no estado principal
     setUsuario((prev) => ({
       ...prev,
       aluno: prev.aluno ? { ...prev.aluno, [name]: value } : prev.aluno,
@@ -75,11 +70,8 @@ export default function Perfil() {
     }));
   };
   
-  // Handler para o Checkbox de Tags
   const handleTagChange = (newTagsArray) => {
     setTagsInput(newTagsArray); 
-    
-    // Sincroniza o objeto 'usuario.aluno' no estado principal com a nova string de tags
     setUsuario((prev) => ({
         ...prev,
         aluno: prev.aluno ? { ...prev.aluno, tags: newTagsArray.join(',') } : prev.aluno,
@@ -87,26 +79,20 @@ export default function Perfil() {
   };
   
   const handleCancel = () => {
-    // Reverte o estado para o original
     setUsuario(originalUsuario);
     if (originalUsuario.role === "ROLE_ALUNO" && originalUsuario.aluno?.tags) {
         setTagsInput(parseTagsString(originalUsuario.aluno.tags));
     }
     setEditando(false);
     setImagemPreview(null);
-    setSelectedImage(null); // Limpa imagem selecionada
+    setSelectedImage(null);
     fetchPerfil(); 
   };
 
-  /**
-   * Esta é a função principal de salvamento.
-   */
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
-      let usuarioParaSalvar = { ...usuario }; // Copia o estado atual
-
-      // PASSO 1: VERIFICAR E FAZER UPLOAD DA IMAGEM (se houver uma nova)
+      let usuarioParaSalvar = { ...usuario };
       if (selectedImage) {
         
         const formData = new FormData();
@@ -128,7 +114,6 @@ export default function Perfil() {
         }
       }
 
-      // PASSO 2: SALVAR OS CAMPOS DE TEXTO
       let payload;
       if (usuarioParaSalvar.role === "ROLE_ALUNO") {
           payload = usuarioParaSalvar.aluno; 
@@ -142,7 +127,6 @@ export default function Perfil() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // PASSO 3: ATUALIZAR O LOCALSTORAGE E RECARREGAR
       const usuarioAtualizado = res.data; 
       localStorage.setItem("user", JSON.stringify(usuarioAtualizado));
 
@@ -253,9 +237,6 @@ export default function Perfil() {
                   key={`aluno-descricao-${editando}`}
                   isTextarea={true}
                 />
-                {/* O COMPONENTE TagsEditaveis FOI ATUALIZADO
-                  PARA ESPELHAR A LÓGICA DE PROJETOS.JSX 
-                */}
                 <TagsEditaveis
                     label="Habilidades/Tecnologias"
                     tags={alunoTags}
@@ -324,10 +305,6 @@ export default function Perfil() {
   );
 }
 
-// -----------------------------------------------------------------
-// COMPONENTES DE AJUDA
-// -----------------------------------------------------------------
-
 function CampoEditavel({ label, name, value, onChange, editando, readOnly, isTextarea }) {
   const isEditable = !readOnly && editando;
   const InputComponent = isTextarea ? 'textarea' : 'input';
@@ -348,26 +325,20 @@ function CampoEditavel({ label, name, value, onChange, editando, readOnly, isTex
   );
 }
 
-// =================================================================
-// 🚀 ATUALIZAÇÃO PRINCIPAL AQUI (TagsEditaveis)
-// =================================================================
 function TagsEditaveis({ label, tags, editando, currentSelectedTags, handleTagChange }) {
-    
-    // 1. Função generateTagClassName copiada de Projetos.jsx
-    //    (necessária para as classes CSS funcionarem)
+
     const generateTagClassName = (tag) => {
         if (tag === "C++") return "tag-c-plus-plus"; 
         
         return `tag-${tag
             .replace(/\s/g, '-')
             .replace(/\+\+/g, 'plus-plus')
-            .replace(/\#/g, 'sharp') // Trata o C#
-            .replace(/\./g, '-') // Trata Vue.js, Node.js
+            .replace(/\#/g, 'sharp')
+            .replace(/\./g, '-')
             .toLowerCase()
         }`;
     }
 
-    // 2. Handler de mudança (lógica idêntica)
     const handleCheckboxChange = (e) => {
         const value = e.target.value;
         const isChecked = e.target.checked;
@@ -384,8 +355,6 @@ function TagsEditaveis({ label, tags, editando, currentSelectedTags, handleTagCh
         <div className="campo">
             <label>{label}</label>
             {editando ? (
-                // 3. Estrutura JSX do modo de edição ATUALIZADA
-                //    para espelhar a do Projetos.jsx
                 <div className="form-group-tags">
                     <div className="tag-checkbox-group">
                         {LINGUAGENS_OPTIONS.map(lang => (
@@ -396,7 +365,6 @@ function TagsEditaveis({ label, tags, editando, currentSelectedTags, handleTagCh
                                     checked={currentSelectedTags.includes(lang)}
                                     onChange={handleCheckboxChange}
                                 />
-                                {/* O <span> vira o botão visual */}
                                 <span className={`tag-chip ${generateTagClassName(lang)}`}>
                                     {lang}
                                 </span>
@@ -407,7 +375,6 @@ function TagsEditaveis({ label, tags, editando, currentSelectedTags, handleTagCh
                 </div>
 
             ) : (
-                // 4. Modo de exibição (sem mudanças, continua roxo padrão)
                 <div className="tags-container">
                     {tags.length > 0 ? (
                         tags.map(tag => (
@@ -426,7 +393,6 @@ function TagsEditaveis({ label, tags, editando, currentSelectedTags, handleTagCh
 
 
 function ProjetosParticipados({ projetos }) {
-    // Modo de exibição (sempre roxo padrão)
     return (
         <div className="projetos-participados-section">
             <h3><FaProjectDiagram /> Projetos Participados ({projetos.length})</h3>

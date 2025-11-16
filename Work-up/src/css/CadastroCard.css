@@ -15,7 +15,6 @@
   box-sizing: border-box;
 }
 
-/* Overlay que cobre a tela inteira */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -32,7 +31,6 @@
   box-sizing: border-box;
 }
 
-/* Card/modal */
 .card, .modal-content {
   background: #ffffff;
   padding: 1.5rem 2rem;
@@ -64,7 +62,6 @@
   }
 }
 
-/* Mantendo título e botões do card */
 .card h1, .modal-content h1 {
   font-size: 1.6rem;
   font-weight: 600;
@@ -154,7 +151,6 @@
   font-size: 1.1rem;
 }
 
-/* Botão de submit */
 .card .submit-btn {
   display: block;
   width: 100%;
@@ -181,7 +177,6 @@
   box-shadow: 0 0 0 3px rgba(49, 46, 129, 0.3);
 }
 
-/* Alerta */
 .alert {
   margin-top: 1rem;
   padding: 0.8rem 1rem;
@@ -219,7 +214,7 @@
 .alert .flex-1 {
   flex: 1;
 }
-/* Campos do formulário */
+
 .form-fields {
   margin: 1rem 0 0.5rem 0;
 }

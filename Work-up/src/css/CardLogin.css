@@ -105,7 +105,7 @@ body {
 }
 
 .form input::placeholder {
-  color: #9ca3af; /* placeholder cinza */
+  color: #9ca3af;
 }
 
 .form input:focus {
@@ -209,7 +209,7 @@ body {
   }
   
   .form input, .login-card .btn {
-    font-size: 16px; /* Evita zoom no iOS */
+    font-size: 16px;
   }
 }
 
