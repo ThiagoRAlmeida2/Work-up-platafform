@@ -144,8 +144,8 @@ export default function Navbar() {
                     cursor: "pointer",
                   }}
                 >
-                  <img
-                    src={user.avatar || "/default-avatar.png"}
+                 <img
+                    src={(user.aluno?.fotoUrl || user.empresa?.fotoUrl) || "/default-avatar.png"}
                     alt={user.email}
                     style={{
                       width: 40,
