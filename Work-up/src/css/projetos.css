@@ -157,7 +157,7 @@ body {
 
 .meus-projetos-btn {
   background: var(--gradient-main); /* Fundo branco */
-  color: var(--text-dark); /* Texto escuro */
+  color: white; /* Texto escuro */
   border: 2px solid var(--border-color); /* Borda cinza claro */
   padding: 10px 18px;
   border-radius: 10px;
