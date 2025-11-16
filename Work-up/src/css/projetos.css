@@ -156,15 +156,15 @@ body {
 }
 
 .meus-projetos-btn {
-  background: var(--card-bg);
-  color: var(--text-dark);
-  border: chartreuse;
+  background: var(--gradient-main); /* Fundo branco */
+  color: var(--text-dark); /* Texto escuro */
+  border: 2px solid var(--border-color); /* Borda cinza claro */
   padding: 10px 18px;
   border-radius: 10px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Sombra sutil */
 }
 
 .meus-projetos-btn:hover:not(.active) {
