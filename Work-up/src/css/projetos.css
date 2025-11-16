@@ -155,25 +155,6 @@ body {
     box-shadow: 0 8px 20px rgba(50, 152, 239, 0.6);
 }
 
-.meus-projetos-btn {
-  background: #312e81;
-  color: var(--card-bg);
-  border: 2px solid #312e81;
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(49, 46, 129, 0.4);
-}
-
-.meus-projetos-btn:hover:not(.active) {
-   transform: translateY(-2px);
-   background: #111827;
-   border-color: #111827;
-   box-shadow: 0 8px 20px rgba(30, 27, 75, 0.6);
-}
-
 .criar-projeto-btn, .salvar-btn {
   background: linear-gradient(90deg, #3298EF, #0078D1);
   color: #fff;
