@@ -25,23 +25,22 @@ export default function LoginCard({ onLoginSuccess, onClose, onShowToast }) {
 
   // 🔹 LOGIN
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
+  e.preventDefault();
+  try {
     const response = await api.post("/api/auth/login", formData);
+    const { token, user } = response.data; 
 
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
 
-      const { token, email, role } = response.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify({ email, role }));
+    onLoginSuccess(user); 
 
-      onLoginSuccess({ email, role });
-    } catch (err) {
-      const msg = err.response?.data || "Erro ao logar. Verifique suas credenciais.";
-      if (onShowToast) onShowToast({ message: msg, type: 'error' });
-      else setAlert(msg);
-    }
-  };
-
+  } catch (err) {
+    const msg = err.response?.data || "Erro ao logar. Verifique suas credenciais.";
+    if (onShowToast) onShowToast({ message: msg, type: 'error' });
+    else setAlert(msg);
+  }
+};
   // 🔹 RESET DE SENHA
   const handleResetPassword = async (e) => {
     e.preventDefault();
