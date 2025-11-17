@@ -168,10 +168,10 @@ function CreateEventModal({ onClose, onEventCreated, setToast }) {
         }
 
         try {
-            const response = await api.post('/api/eventos/criar', formData, {
+          const response = await api.post('/api/eventos/criar', formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
-
+                    'Content-Type': undefined 
                 }
             });
 
