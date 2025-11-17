@@ -723,6 +723,16 @@
     font-size: 0.95rem;
 }
 
+.error-message {
+  color: #dc2626;
+  font-size: 0.9rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-align: left;
+}
+
+
 .file-input-wrapper {
     display: flex;
     align-items: center;

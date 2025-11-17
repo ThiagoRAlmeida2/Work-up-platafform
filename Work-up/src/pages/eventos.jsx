@@ -107,12 +107,12 @@ function EventDetailsModal({ event, userRole, onClose, onOpenLogin, onEventClose
         </div>
     );
 }
-
 function CreateEventModal({ onClose, onEventCreated, setToast }) {
     const [newEvent, setNewEvent] = useState(initialNewEvent);
     const [fileName, setFileName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    
+    const [imageError, setImageError] = useState(''); // 🔥 novo estado
+
     const DESCRIPTION_MAX_LENGTH = 300; 
 
     const handleChange = (e) => {
@@ -128,7 +128,8 @@ function CreateEventModal({ onClose, onEventCreated, setToast }) {
                 image: objectUrl,
                 fileData: file
             }));
-            
+
+            setImageError(''); // limpa o erro ao escolher imagem
             return;
         }
 
@@ -138,14 +139,17 @@ function CreateEventModal({ onClose, onEventCreated, setToast }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
+        // ✅ Validação da imagem
         if (!newEvent.fileData) {
+            setImageError('Por favor, selecione uma imagem de capa para o evento.');
             setToast({
-              message: "Por favor, selecione uma imagem de capa para o evento.",
-              type: 'warning'
+                message: "Selecione uma imagem antes de publicar o evento.",
+                type: 'warning'
             });
             return;
         }
-        
+
+        setImageError('');
         setIsLoading(true);
 
         const eventData = {
@@ -177,7 +181,7 @@ function CreateEventModal({ onClose, onEventCreated, setToast }) {
             };
             
             onEventCreated(novoEventoPublicado);
-              setToast({
+            setToast({
                 message: `Novo Evento Criado com sucesso: ${eventoCriado.title}`,
                 type: 'success'
             });
@@ -186,13 +190,13 @@ function CreateEventModal({ onClose, onEventCreated, setToast }) {
         } catch (error) {
             console.error("Falha ao publicar evento:", error);
             const errorMsg = error.response?.data?.message || error.response?.data || error.message;
-           setToast({
+            setToast({
                 message: `Falha ao publicar evento: ${errorMsg}`,
                 type: 'error'
             });
-          } finally {
+        } finally {
             setIsLoading(false);
-      }
+        }
     };
     
     const categories = ["Workshop", "Curso", "Hackathon", "Competição", "Conferência", "Networking"];
@@ -238,7 +242,8 @@ function CreateEventModal({ onClose, onEventCreated, setToast }) {
                         ))}
                     </select>
                     
-                    <div className="form-group-image">
+                    {/* 🖼️ Campo de imagem com erro visível */}
+                    <div className={`form-group-image ${imageError ? 'highlight' : ''}`}>
                         <label>Imagem de Capa do Evento:</label>
                         <div className="file-input-wrapper">
                             <input 
@@ -248,7 +253,6 @@ function CreateEventModal({ onClose, onEventCreated, setToast }) {
                                 onChange={handleChange} 
                                 accept="image/*" 
                                 disabled={isLoading}
-                                required
                             />
                             <label htmlFor="event-image-upload" className="btn-upload-custom">
                                 <FaPlusCircle /> Inserir Imagem
@@ -257,6 +261,8 @@ function CreateEventModal({ onClose, onEventCreated, setToast }) {
                                 {fileName || "Nenhum arquivo selecionado"}
                             </span>
                         </div>
+                        {/* Mensagem de erro abaixo do campo */}
+                        {imageError && <p className="error-message">{imageError}</p>}
                     </div>
 
                     <div className="input-group-row">
