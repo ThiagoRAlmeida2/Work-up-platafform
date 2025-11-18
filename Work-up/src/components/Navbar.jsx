@@ -84,6 +84,10 @@ export default function Navbar() {
             <a href="/eventos" onClick={closeMobileMenu}>Eventos</a>
             <a href="/projetos" onClick={closeMobileMenu}>Projetos</a>
             
+            {user && (
+               <a href="/perfil?tab=dashboard" onClick={closeMobileMenu}>Dashboard</a>
+            )}
+
             {user && isMobileView && (
               <>
                 <div className="mobile-divider" style={{ borderTop: '1px solid rgba(0,0,0,0.1)', margin: '5px 0', width: '100%' }}></div>
@@ -97,9 +101,8 @@ export default function Navbar() {
                 </a>
               </>
             )}
-            
           </nav>
-
+            
           <div className="nav__actions">
             {!user ? (
               // BOTOES DESLOGADO
@@ -152,7 +155,6 @@ export default function Navbar() {
                 {menuOpen && (
                   <ul className="dropdown">
                     <li><a href="/perfil" onClick={() => setMenuOpen(false)}>Perfil</a></li>
-                    <li><a href="/projetos" onClick={() => setMenuOpen(false)}>Projetos</a></li>
                     <li 
                       onClick={handleLogout}
                       style={{ cursor: 'pointer' }}

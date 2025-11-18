@@ -1,5 +1,5 @@
 :root {
-  /* Cores Modernas */
+  /* --- CORES GERAIS --- */
   --primary-color: #312e81; 
   --secondary-color: #1e1b4b; 
   --background-light: #f4f7f9;
@@ -9,8 +9,9 @@
   --gradient-main: linear-gradient(45deg, #312e81, #1e1b4b);
   --success-color: #22c55e;
   --danger-color: #e74c3c;
-  --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --sidebar-width: 260px;
 
+  /* --- CORES DAS TAGS --- */
   --tag-default-border: #312e81;
   --tag-default-color: #312e81;
 
@@ -30,59 +31,154 @@
   --tag-docker: #2496ed;
 }
 
-
+/* =========================================
+   1. ESTRUTURA DO LAYOUT (SIDEBAR + CONTENT)
+   ========================================= */
 body {
     background-color: var(--background-light);
+    overflow-x: hidden;
 }
 
-.perfil-container {
+.profile-layout {
   display: flex;
-  justify-content: center;
+  min-height: calc(100vh - 80px); /* Ajuste conforme altura da navbar */
+  background-color: var(--background-light);
+  font-family: 'Inter', sans-serif;
+  position: relative;
   width: 100%;
-  max-width: 100%;
-  min-height: 100vh;
-  padding: 60px 24px;
-  background: var(--background-light);
-  overflow-x: hidden;
-  box-sizing: border-box;
-  animation: fadeIn 0.6s ease-in-out;
 }
 
-.perfil-card {
+/* --- SIDEBAR --- */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--card-bg);
+  border-right: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden;
+  white-space: nowrap;
+  height: auto;
+  position: sticky;
+  top: 0;
+  flex-shrink: 0;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.03);
+  z-index: 10;
+}
+
+.sidebar.closed {
+  width: 0;
+  padding: 20px 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  color: var(--text-medium);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.nav-item:hover {
+  background-color: #f3f4f6;
+  color: var(--primary-color);
+}
+
+.nav-item.active {
+  background: rgba(49, 46, 129, 0.08);
+  color: var(--primary-color);
+  font-weight: 700;
+  box-shadow: inset 3px 0 0 var(--primary-color);
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  min-width: 24px;
+}
+
+/* --- CONTEÚDO PRINCIPAL --- */
+.profile-content {
+  flex: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.menu-toggle-btn {
+  background: var(--card-bg);
+  border: 1px solid #eee;
+  font-size: 20px;
+  color: var(--text-medium);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.menu-toggle-btn:hover {
+  color: var(--primary-color);
+  background-color: #fff;
+  transform: scale(1.05);
+}
+
+/* =========================================
+   2. CARDS E PERFIL GERAL
+   ========================================= */
+.tab-content {
   background: var(--card-bg);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+  animation: fadeIn 0.5s ease-in-out;
   width: 100%;
-  max-width: 950px;
-  overflow-x: hidden;
-  box-sizing: border-box;
 }
 
 .perfil-titulo {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 30px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
     color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.perfil-top {
-  display: flex;
-  gap: 50px;
-}
-
+/* Foto de Perfil */
 .foto-container {
   position: relative;
   flex-shrink: 0;
-  margin-top: 20px;
-  margin-bottom: 50px;
-  width: 180px;
-  height: 180px;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 30px auto;
   border-radius: 50%;
   border: 4px solid var(--secondary-color);
-  box-shadow: 0 4px 15px rgba(49, 46, 129, 0.2);
+  box-shadow: 0 8px 20px rgba(49, 46, 129, 0.15);
   background: var(--background-light);
 }
 
@@ -90,8 +186,6 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
-  display: block;
   border-radius: 50%;
 }
 
@@ -101,215 +195,125 @@ body {
   right: 5px;   
   background: var(--gradient-main);
   color: #fff;
-  padding: 10px; 
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  opacity: 0.8;
   display: flex; 
   align-items: center; 
   justify-content: center;
   width: 40px; 
   height: 40px;
-  aspect-ratio: 1 / 1; 
 }
 
-.editar-foto:hover {
-  transform: scale(1.1);
-  opacity: 1;
-  box-shadow: 0 6px 15px rgba(49, 46, 129, 0.4);
-}
+.editar-foto:hover { transform: scale(1.1); }
 
-.editar-foto.editing {
-  opacity: 1;
-  background: var(--primary-color);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.perfil-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+/* Inputs e Formulários */
+.perfil-info { width: 100%; }
 
 .campo label {
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   display: block;
   color: var(--text-dark);
-  font-size: 0.95rem;
-}
-
-.input-editavel {
-  position: relative;
+  font-size: 0.9rem;
 }
 
 .input-editavel input,
 .input-editavel textarea {
   width: 100%;
   padding: 12px 15px;
-  padding-right: 45px; 
   border-radius: 10px;
-  border: 1px solid #dcdcdc;
-  background: var(--background-light);
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
   color: var(--text-dark);
   font-size: 1rem;
   transition: all 0.3s ease;
+  font-family: inherit;
 }
 
-.input-editavel.is-textarea textarea {
-    min-height: 120px;
-    resize: vertical;
-    padding-right: 15px; 
-}
+.input-editavel.is-textarea textarea { min-height: 120px; resize: vertical; }
 
 .input-editavel.is-editable input,
 .input-editavel.is-editable textarea {
     border-color: var(--primary-color);
     background: #fff;
-    box-shadow: 0 0 5px rgba(49, 46, 129, 0.4);
+    box-shadow: 0 0 0 3px rgba(49, 46, 129, 0.1);
 }
 
-.input-editavel input:read-only,
-.input-editavel textarea:read-only {
-  background: #e9ecef; 
-  border-color: #e9ecef;
-  cursor: default;
-  color: var(--text-medium);
+/* Botões */
+.botoes {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
-.icone-editar {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-medium);
-  cursor: default;
-  transition: color 0.3s;
-  opacity: 0.7;
+.btn-principal, .btn-cancelar {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
 }
 
-.icone-editar.visible {
-    color: var(--primary-color);
-    opacity: 1;
+.btn-principal {
+  color: #fff;
+  background: var(--gradient-main);
+  box-shadow: 0 4px 15px rgba(49, 46, 129, 0.3);
 }
 
+.btn-principal:hover { transform: translateY(-2px); opacity: 0.95; }
+
+.btn-salvar { background: var(--success-color); box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
+.btn-cancelar { background: #f3f4f6; color: var(--text-dark); border: 1px solid #e5e7eb; }
+.btn-cancelar:hover { background: #e5e7eb; }
+
+
+/* =========================================
+   3. ESTILOS DE TAGS
+   ========================================= */
 .tags-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    padding: 12px 0;
+    gap: 8px;
+    padding: 5px 0;
 }
 
 .tag-chip {
     display: inline-block;
     padding: 5px 12px;
     border-radius: 20px;
-    font-size: 0.85em;
-    font-weight: 600;
-    white-space: nowrap;
-    border: 2px solid var(--tag-default-border);
+    font-size: 0.8em;
+    font-weight: 700;
+    border: 1px solid var(--tag-default-border);
     color: var(--tag-default-color);
     background: rgba(49, 46, 129, 0.05);
     transition: all 0.3s ease;
 }
 
-.tag-chip:hover {
-    opacity: 0.9;
-}
+.no-tags { font-style: italic; color: var(--text-medium); font-size: 0.9em; }
 
-.no-tags {
-    font-style: italic;
-    color: var(--text-medium);
-    font-size: 0.9em;
-}
-
-.botoes {
-  margin-top: 30px;
-  display: flex;
-  gap: 15px;
-  justify-content: flex-start;
-}
-
-.btn-principal {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  color: #fff;
-  transition: all 0.3s ease;
-  background: var(--gradient-main);
-  box-shadow: 0 4px 10px rgba(49, 46, 129, 0.4);
-  display: flex;
-  align-items: center;
-}
-
-.btn-principal:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-}
-
-.btn-salvar {
-    background: var(--success-color); 
-    box-shadow: 0 4px 10px rgba(34, 197, 94, 0.4);
-}
-
-.btn-salvar:hover {
-    background: #16a34a;
-}
-
-.btn-cancelar {
-  background: #adb5bd;
-  color: var(--text-dark);
-  padding: 12px 25px;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-}
-
-.btn-cancelar:hover {
-  background: #7f8c8d;
-  color: #fff;
-}
-
-.form-group-tags {
-    margin-bottom: 20px;
-}
-
+/* Checkbox Group */
 .tag-checkbox-group {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 10px;
-    padding: 10px;
-    border: 1px solid var(--primary-color); 
-    border-radius: 10px;
-    background: var(--background-light);
 }
 
 .tag-checkbox-label {
     display: flex;
     align-items: center;
     cursor: pointer;
-    margin: 0;
-    padding: 0;
 }
 
-.tag-checkbox-label input[type="checkbox"] {
-    display: none;
-}
+.tag-checkbox-label input[type="checkbox"] { display: none; }
 
 .tag-checkbox-label .tag-chip {
     padding: 7px 15px;
@@ -319,251 +323,224 @@ body {
     transition: all 0.2s ease;
     border-width: 2px; 
     background-color: transparent;
-    color: inherit;
-    border-color: inherit;
-    
-    opacity: 0.8;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    opacity: 0.7;
 }
 
-.tag-checkbox-label:hover .tag-chip {
-    opacity: 1;
-    transform: translateY(-1px);
-}
+.tag-checkbox-label:hover .tag-chip { opacity: 1; transform: translateY(-1px); }
 
-.tag-checkbox-label .tag-javascript { color: var(--tag-javascript); border-color: var(--tag-javascript); }
-.tag-checkbox-label .tag-python { color: var(--tag-python); border-color: var(--tag-python); }
-.tag-checkbox-label .tag-java { color: var(--tag-java); border-color: var(--tag-java); }
-.tag-checkbox-label .tag-csharp { color: var(--tag-csharp); border-color: var(--tag-csharp); }
-.tag-checkbox-label .tag-c-plus-plus { color: var(--tag-c-plus-plus); border-color: var(--tag-c-plus-plus); }
-.tag-checkbox-label .tag-react { color: var(--tag-react); border-color: var(--tag-react); }
-.tag-checkbox-label .tag-angular { color: var(--tag-angular); border-color: var(--tag-angular); }
-.tag-checkbox-label .tag-vue-js { color: var(--tag-vue-js); border-color: var(--tag-vue-js); }
-.tag-checkbox-label .tag-node-js { color: var(--tag-node-js); border-color: var(--tag-node-js); }
-.tag-checkbox-label .tag-spring-boot { color: var(--tag-spring-boot); border-color: var(--tag-spring-boot); }
-.tag-checkbox-label .tag-sql { color: var(--tag-sql); border-color: var(--tag-sql); }
-.tag-checkbox-label .tag-mongodb { color: var(--tag-mongodb); border-color: var(--tag-mongodb); }
-.tag-checkbox-label .tag-aws { color: var(--tag-aws); border-color: var(--tag-aws); }
-.tag-checkbox-label .tag-docker { color: var(--tag-docker); border-color: var(--tag-docker); }
+/* Cores Específicas das Tags */
+.tag-javascript, .tag-checkbox-label .tag-javascript { color: var(--tag-javascript); border-color: var(--tag-javascript); }
+.tag-python, .tag-checkbox-label .tag-python { color: var(--tag-python); border-color: var(--tag-python); }
+.tag-java, .tag-checkbox-label .tag-java { color: var(--tag-java); border-color: var(--tag-java); }
+.tag-csharp, .tag-checkbox-label .tag-csharp { color: var(--tag-csharp); border-color: var(--tag-csharp); }
+.tag-c-plus-plus, .tag-checkbox-label .tag-c-plus-plus { color: var(--tag-c-plus-plus); border-color: var(--tag-c-plus-plus); }
+.tag-react, .tag-checkbox-label .tag-react { color: var(--tag-react); border-color: var(--tag-react); }
+.tag-angular, .tag-checkbox-label .tag-angular { color: var(--tag-angular); border-color: var(--tag-angular); }
+.tag-vue-js, .tag-checkbox-label .tag-vue-js { color: var(--tag-vue-js); border-color: var(--tag-vue-js); }
+.tag-node-js, .tag-checkbox-label .tag-node-js { color: var(--tag-node-js); border-color: var(--tag-node-js); }
+.tag-spring-boot, .tag-checkbox-label .tag-spring-boot { color: var(--tag-spring-boot); border-color: var(--tag-spring-boot); }
+.tag-sql, .tag-checkbox-label .tag-sql { color: var(--tag-sql); border-color: var(--tag-sql); }
+.tag-mongodb, .tag-checkbox-label .tag-mongodb { color: var(--tag-mongodb); border-color: var(--tag-mongodb); }
+.tag-aws, .tag-checkbox-label .tag-aws { color: var(--tag-aws); border-color: var(--tag-aws); }
+.tag-docker, .tag-checkbox-label .tag-docker { color: var(--tag-docker); border-color: var(--tag-docker); }
 
+/* Estado Selecionado */
 .tag-checkbox-label input[type="checkbox"]:checked + .tag-chip {
     opacity: 1;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-chip {
-    color: var(--text-dark) !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    color: #fff !important; 
 }
 
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-javascript {
-    background-color: var(--tag-javascript) !important; border-color: var(--tag-javascript) !important; color: var(--text-dark) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-react {
-    background-color: var(--tag-react) !important; border-color: var(--tag-react) !important; color: var(--text-dark) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-aws {
-    background-color: var(--tag-aws) !important; border-color: var(--tag-aws) !important; color: var(--text-dark) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-docker {
-    background-color: var(--tag-docker) !important; border-color: var(--tag-docker) !important; color: var(--text-dark) !important;
-}
+.tag-checkbox-label input[type="checkbox"]:checked + .tag-javascript { background-color: var(--tag-javascript) !important; color: #000 !important; }
+.tag-checkbox-label input[type="checkbox"]:checked + .tag-react { background-color: var(--tag-react) !important; color: #000 !important; }
+.tag-checkbox-label input[type="checkbox"]:checked + .tag-aws { background-color: var(--tag-aws) !important; color: #000 !important; }
+.tag-checkbox-label input[type="checkbox"]:checked + .tag-python { background-color: var(--tag-python) !important; }
+.tag-checkbox-label input[type="checkbox"]:checked + .tag-java { background-color: var(--tag-java) !important; }
+.tag-checkbox-label input[type="checkbox"]:checked + .tag-spring-boot { background-color: var(--tag-spring-boot) !important; }
+.tag-checkbox-label input[type="checkbox"]:checked + .tag-docker { background-color: var(--tag-docker) !important; }
 
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-python {
-    background-color: var(--tag-python) !important; border-color: var(--tag-python) !important; color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-java {
-    background-color: var(--tag-java) !important; border-color: var(--tag-java) !important; color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-csharp {
-    background-color: var(--tag-csharp) !important; border-color: var(--tag-csharp) !important; color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-c-plus-plus {
-    background-color: var(--tag-c-plus-plus) !important; border-color: var(--tag-c-plus-plus) !important; color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-angular {
-    background-color: var(--tag-angular) !important; border-color: var(--tag-angular) !important; color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-vue-js {
-    background-color: var(--tag-vue-js) !important; border-color: var(--tag-vue-js) !important; color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-node-js {
-    background-color: var(--tag-node-js) !important; border-color: var(--tag-node-js) !important; color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-spring-boot {
-    background-color: var(--tag-spring-boot) !important; border-color: var(--tag-spring-boot) !important; color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-sql {
-    background-color: var(--tag-sql) !important; border-color: var(--tag-sql) !important; color: var(--card-bg) !important;
-}
-.tag-checkbox-label input[type="checkbox"]:checked + .tag-mongodb {
-    background-color: var(--tag-mongodb) !important; border-color: var(--tag-mongodb) !important; color: var(--card-bg) !important;
-}
 
-.form-group-tags small {
-    display: block;
-    margin-top: 10px;
-    color: var(--text-medium);
-    font-size: 0.8em;
-    font-style: italic;
-}
-
+/* =========================================
+   4. PROJETOS (Cards e Lista)
+   ========================================= */
 .projetos-participados-section {
-    margin-top: 40px;
-    padding-top: 30px;
-    border-top: 1px solid #eee;
-}
-
-.projetos-participados-section h3 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin: 0 0 20px 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    margin-top: 10px;
 }
 
 .projetos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
 }
 
-.project-card.projeto-participado {
-    background: var(--card-bg);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+.project-card {
+    background: #fff;
     border-radius: 12px;
-    border-left: 4px solid var(--secondary-color);
-    padding: 20px;
-    height: auto;
-    transition: all 0.2s ease;
-    display: block; 
+    padding: 25px;
+    border: 1px solid #eee;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-left: 4px solid var(--secondary-color); 
 }
 
-.project-card.projeto-participado:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     border-left-color: var(--primary-color);
 }
 
-.projeto-participado .project-header {
-    margin-bottom: 0;
+/* Header Flexível (Título + Status) */
+.project-card .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 10px;
 }
-.projeto-participado .card-title {
-    font-size: 1.2rem;
-    font-weight: 700;
+
+.project-card .card-title {
     margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
     color: var(--text-dark);
+    line-height: 1.3;
 }
 
-.projeto-participado .card-description {
+.card-description {
     color: var(--text-medium);
-    line-height: 1.4;
-    margin: 10px 0;
     font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    flex-grow: 1;
 }
 
-.projeto-participado .status-tags {
-    display: none;
-}
-
-.projeto-participado .card-details {
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px solid #f0f0f0;
-}
-
-.projeto-participado .tags-list {
+.tags-list {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    margin-bottom: 20px;
 }
 
-.projeto-participado .card-info {
-    display: block;
+.card-details {
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
     font-size: 0.9rem;
     color: var(--text-medium);
-    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.projeto-participado .card-info span {
+.card-details p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-details span {
     font-weight: 600;
     color: var(--text-dark);
+}
+
+/* Badges de Status */
+.status-badges {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+    align-items: center;
 }
 
 .status-regime {
     display: inline-block;
     padding: 4px 10px;
     border-radius: 6px;
-    font-size: 0.8em;
+    font-size: 0.85em;
     font-weight: bold;
     text-transform: uppercase;
 }
 
-.regime-pj {
-    background-color: #fff3cd; 
-    color: #856404;
+.regime-pj { background-color: #fff3cd; color: #856404; }
+.regime-clt { background-color: #d4edda; color: #155724; }
+
+/* Badge e Estilo para Encerrado */
+.status-tag.tag-encerrado {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
-.regime-clt {
-    background-color: #d4edda; 
-    color: #155724;
+.project-card.card-encerrado {
+    opacity: 0.85;
+    background-color: #fafafa;
+    border-left-color: #9ca3af;
 }
 
 .no-projects {
     grid-column: 1 / -1;
     text-align: center;
     color: var(--text-medium);
-    padding: 20px;
-    font-style: italic;
+    padding: 30px;
+    background: #f9fafb;
+    border-radius: 10px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* =========================================
+   5. DASHBOARD CARDS
+   ========================================= */
+.card-dashboard {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s;
 }
 
-@media (max-width: 992px) {
-    .projetos-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.card-dashboard:hover { transform: translateY(-5px); border-color: var(--primary-color); }
+.card-dashboard h3 { color: var(--text-medium); font-size: 1.1rem; margin-bottom: 10px; }
+
+
+/* =========================================
+   6. RESPONSIVIDADE
+   ========================================= */
+@media (min-width: 769px) {
+    .foto-container { margin: 0; }
 }
 
 @media (max-width: 768px) {
-  .perfil-container {
-    padding: 60px 16px;
+  .profile-layout { flex-direction: column; min-height: auto; }
+  
+  .sidebar {
+      width: 100%;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid #eee;
+      padding: 10px;
   }
   
-  .perfil-card {
-    padding: 20px;
-  }
-  
-  .perfil-top {
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-  }
-  
-  .projetos-grid {
-    grid-template-columns: 1fr;
-  }
+  .sidebar.closed { height: 0; padding: 0; display: none; }
+
+  .profile-content { padding: 20px 16px; }
+  .tab-content { padding: 25px 20px; }
+  .perfil-top { flex-direction: column; align-items: center; }
+  .foto-container { margin-bottom: 20px; }
+  .menu-toggle-btn { width: 100%; margin-bottom: 15px; }
 }
 
-@media (max-width: 500px) {
-  .perfil-container {
-    padding: 40px 12px;
-  }
-  
-  .perfil-card {
-    padding: 16px;
-  }
-  
-  .perfil-titulo {
-    font-size: 1.8rem;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
