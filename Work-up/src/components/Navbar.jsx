@@ -4,7 +4,6 @@ import LoginCard from "./LoginCard.jsx";
 import Toast from "../components/Toast";
 import logo from "../assets/IMG/Work-UP_logo-Principal.png";
 import { Menu, X } from "lucide-react";
-import evolucoes from "../pages/evolucoes.jsx";
 
 const MOBILE_BREAKPOINT = 880;
 
@@ -84,7 +83,7 @@ export default function Navbar() {
             <a href="/" onClick={closeMobileMenu}>Início</a>
             <a href="/eventos" onClick={closeMobileMenu}>Eventos</a>
             <a href="/projetos" onClick={closeMobileMenu}>Projetos</a>
-            <a href="/evolucoes" onClick={closeMobileMenu}>Evoluções</a>
+            <a href="/evolucao" onClick={closeMobileMenu}>Evolução</a>
             {user && (
                <a href="/perfil?tab=dashboard" onClick={closeMobileMenu}>Dashboard</a>
             )}

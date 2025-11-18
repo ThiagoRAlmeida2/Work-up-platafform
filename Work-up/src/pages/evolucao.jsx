@@ -60,7 +60,6 @@ export default function Evolucao() {
     avaliacaoMedia: 0
   });
   
-
   const [realData, setRealData] = useState(mockData);
   const [loading, setLoading] = useState(true);
 
@@ -110,7 +109,7 @@ export default function Evolucao() {
     },
     {
       id: 'veteran',
-      icon: '🎖️',
+      icon: '🏅',
       title: 'Veterano da Plataforma',
       description: 'Participou de 10+ projetos',
       condition: (data) => data.totalProjetos >= 10
@@ -348,7 +347,7 @@ export default function Evolucao() {
             color="#f59e0b"
           />
           <StatCard 
-            icon={Code} 
+            icon={Target} 
             title="Tecnologias" 
             value={animatedStats.tecnologiasDominadas} 
             color="#8b5cf6"
