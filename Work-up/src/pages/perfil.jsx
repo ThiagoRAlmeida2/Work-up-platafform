@@ -393,9 +393,8 @@ function EventosParticipados({ eventos }) {
         </div>
     );
 }
-
 function DashboardEvolucao({ usuario, isAluno }) {
-    const navigate = useNavigate(); // Hook para navegação
+    const navigate = useNavigate();
     const [realData, setRealData] = useState(null);
 
     useEffect(() => {
@@ -416,15 +415,28 @@ function DashboardEvolucao({ usuario, isAluno }) {
 
         const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
         const anoAtual = new Date().getFullYear();
-        const projetosPorMes = meses.map((mes, index) => ({ mes, projetos: 0, concluidos: 0 }));
+        // Inicializa a estrutura para incluir eventos
+        const atividadePorMes = meses.map((mes, index) => ({ mes, projetos: 0, concluidos: 0, eventos: 0 }));
 
+        // Lógica de Projetos
         projetos.forEach(p => {
             const d = parseDate(p.dataInicio);
             if (d && d.getFullYear() === anoAtual) {
-                projetosPorMes[d.getMonth()].projetos += 1;
-                if(p.encerrado) projetosPorMes[d.getMonth()].concluidos += 1;
+                atividadePorMes[d.getMonth()].projetos += 1;
+                if(p.encerrado) atividadePorMes[d.getMonth()].concluidos += 1;
             }
         });
+        
+        // Lógica de Eventos (ADICIONADA)
+        eventos.forEach(e => {
+            // Assume que 'e.date' é o campo de data do evento e usa a função utilitária
+            const d = parseDate(e.date); 
+            if (d && d.getFullYear() === anoAtual) {
+                // Incrementa a contagem de eventos no mês correto
+                atividadePorMes[d.getMonth()].eventos += 1;
+            }
+        });
+
 
         setRealData({
             totalProjetos,
@@ -432,7 +444,7 @@ function DashboardEvolucao({ usuario, isAluno }) {
             totalEventos,
             tecnologiasDominadas: isAluno ? tags.length : 0,
             colaboradores: totalColaboradores,
-            projetosPorMes
+            projetosPorMes: atividadePorMes // Renomeado internamente no cálculo, mas mantém o nome do estado
         });
 
     }, [usuario, isAluno]);
@@ -523,8 +535,9 @@ function DashboardEvolucao({ usuario, isAluno }) {
                         <XAxis dataKey="mes" stroke="#6b7280" />
                         <YAxis stroke="#6b7280" allowDecimals={false} />
                         <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
-                        <Line type="monotone" dataKey="projetos" name="Ativos" stroke="#3298EF" strokeWidth={3} dot={{ r: 4 }} />
-                        <Line type="monotone" dataKey="concluidos" name="Concluídos" stroke="#10b981" strokeWidth={3} dot={{ r: 4 }} />
+                        <Line type="monotone" dataKey="projetos" name="Projetos Ativos" stroke="#3298EF" strokeWidth={3} dot={{ r: 4 }} />
+                        <Line type="monotone" dataKey="concluidos" name="Projetos Concluídos" stroke="#10b981" strokeWidth={3} dot={{ r: 4 }} />
+                        <Line type="monotone" dataKey="eventos" name="Eventos" stroke="#f59e0b" strokeWidth={3} dot={{ r: 4 }} /> {/* LINHA ADICIONADA */}
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
