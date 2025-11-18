@@ -317,10 +317,22 @@ function CampoEditavel({ label, name, value, onChange, editando, readOnly, isTex
 }
 
 function TagsEditaveis({ label, tags, editando, currentSelectedTags, handleTagChange }) {
+    
+    // NOVO: Função para gerar nomes de classes CSS limpos e compatíveis
     const generateTagClassName = (tag) => {
         if (!tag) return "";
-        return `tag-${tag.replace(/[\s+#.]/g, '-').toLowerCase()}`;
-    }
+        let cleanTag = tag.toLowerCase().trim();
+
+        // Mapeamento explícito para tags com caracteres especiais
+        if (cleanTag === 'c++') return 'tag-c-plus-plus';
+        if (cleanTag === 'c#') return 'tag-csharp';
+        if (cleanTag === 'vue.js') return 'tag-vue-js';
+        if (cleanTag === 'node.js') return 'tag-node-js';
+        if (cleanTag === 'spring boot') return 'tag-spring-boot';
+
+        // Padrão para os demais
+        return `tag-${cleanTag.replace(/[\s.#]/g, '-')}`;
+    };
     const handleCheckboxChange = (e) => {
         const value = e.target.value;
         const isChecked = e.target.checked;
