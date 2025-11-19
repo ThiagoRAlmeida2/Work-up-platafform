@@ -318,19 +318,16 @@ function CampoEditavel({ label, name, value, onChange, editando, readOnly, isTex
 
 function TagsEditaveis({ label, tags, editando, currentSelectedTags, handleTagChange }) {
     
-    // NOVO: Função para gerar nomes de classes CSS limpos e compatíveis
     const generateTagClassName = (tag) => {
         if (!tag) return "";
         let cleanTag = tag.toLowerCase().trim();
 
-        // Mapeamento explícito para tags com caracteres especiais
         if (cleanTag === 'c++') return 'tag-c-plus-plus';
         if (cleanTag === 'c#') return 'tag-csharp';
         if (cleanTag === 'vue.js') return 'tag-vue-js';
         if (cleanTag === 'node.js') return 'tag-node-js';
         if (cleanTag === 'spring boot') return 'tag-spring-boot';
 
-        // Padrão para os demais
         return `tag-${cleanTag.replace(/[\s.#]/g, '-')}`;
     };
     const handleCheckboxChange = (e) => {
@@ -427,10 +424,8 @@ function DashboardEvolucao({ usuario, isAluno }) {
 
         const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
         const anoAtual = new Date().getFullYear();
-        // Inicializa a estrutura para incluir eventos
         const atividadePorMes = meses.map((mes, index) => ({ mes, projetos: 0, concluidos: 0, eventos: 0 }));
 
-        // Lógica de Projetos
         projetos.forEach(p => {
             const d = parseDate(p.dataInicio);
             if (d && d.getFullYear() === anoAtual) {
@@ -439,16 +434,12 @@ function DashboardEvolucao({ usuario, isAluno }) {
             }
         });
         
-        // Lógica de Eventos (ADICIONADA)
         eventos.forEach(e => {
-            // Assume que 'e.date' é o campo de data do evento e usa a função utilitária
             const d = parseDate(e.date); 
             if (d && d.getFullYear() === anoAtual) {
-                // Incrementa a contagem de eventos no mês correto
                 atividadePorMes[d.getMonth()].eventos += 1;
             }
         });
-
 
         setRealData({
             totalProjetos,
@@ -456,7 +447,7 @@ function DashboardEvolucao({ usuario, isAluno }) {
             totalEventos,
             tecnologiasDominadas: isAluno ? tags.length : 0,
             colaboradores: totalColaboradores,
-            projetosPorMes: atividadePorMes // Renomeado internamente no cálculo, mas mantém o nome do estado
+            projetosPorMes: atividadePorMes
         });
 
     }, [usuario, isAluno]);
@@ -547,10 +538,10 @@ function DashboardEvolucao({ usuario, isAluno }) {
                         <XAxis dataKey="mes" stroke="#6b7280" />
                         <YAxis stroke="#6b7280" allowDecimals={false} />
                         <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
-                        <Line type="monotone" dataKey="projetos" name="Projetos Ativos" stroke="#3298EF" strokeWidth={3} dot={{ r: 4 }} />
-                        <Line type="monotone" dataKey="concluidos" name="Projetos Concluídos" stroke="#10b981" strokeWidth={3} dot={{ r: 4 }} />
-                        <Line type="monotone" dataKey="eventos" name="Eventos" stroke="#f59e0b" strokeWidth={3} dot={{ r: 4 }} /> {/* LINHA ADICIONADA */}
-                        </LineChart>
+                        <Line type="monotone" dataKey="eventos" name="Eventos" stroke="#F53E3EFF" strokeWidth={3} dot={{ fill: '#F53E3EFF', r: 4 }} />
+                        <Line type="monotone" dataKey="concluidos" name="Concluídos" stroke="#10b981" strokeWidth={3} dot={{ fill: '#10b981', r: 4 }} />
+                        <Line type="monotone" dataKey="projetos" name="Projetos" stroke="#3298EF" strokeWidth={3} dot={{ fill: '#3298EF', r: 4 }} />
+                       </LineChart>
                     </ResponsiveContainer>
                 </div>
 

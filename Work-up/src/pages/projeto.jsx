@@ -233,13 +233,11 @@ export default function ProjetosList() {
         });
     };
     
-    // 🚩 ATUALIZADA: Abre o ConfirmDialog
     const handleEncerrarProjeto = async (id) => {
         setProjetoToCancel(id);
         setShowConfirmDialog(true);
     };
 
-    // 🚩 ADICIONADA: Função de confirmação de encerramento
     const confirmEncerrarProjeto = async () => {
         const id = projetoToCancel;
         
@@ -381,7 +379,6 @@ export default function ProjetosList() {
                             </button>
                         )}
 
-                        {/* DASHBOARD CANDIDATOS (Apenas Empresa) */}
                         {role === "ROLE_EMPRESA" && (
                             <a 
                                 href="/dashboard" 
@@ -459,7 +456,6 @@ export default function ProjetosList() {
                                     </span>
                                 </div>
                                 
-                                {/* GERAÇÃO DE TAGS */}
                                 <div className="tags-list">
                                     {p.tags.map(tag => {
                                         const className = generateTagClassName(tag); 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import "../css/evolucoes.css"; 
 import { 
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
@@ -6,11 +7,10 @@ import {
 } from "recharts";
 import { 
     FaRocket, FaChartLine, FaBullseye, FaMedal, FaUsers, 
-    FaCalendarAlt, FaArrowUp, FaBolt, FaCode, FaChevronDown, FaChevronUp, FaBriefcase
+    FaCalendarAlt, FaArrowUp, FaBolt, FaCode, FaChevronDown, FaChevronUp, FaBriefcase,
+    FaArrowLeft 
 } from "react-icons/fa";
 import api from "../service/api";
-
-// --- UTILITÁRIOS ---
 
 const parseTagsString = (tagsString) => {
     if (Array.isArray(tagsString)) return tagsString;
@@ -58,7 +58,6 @@ const isProjectConcluded = (p) => {
 
 const COLORS = ['#3298EF', '#312e81', '#1e1b4b', '#0078D1', '#111827', '#6366f1'];
 
-// 🟢 FUNÇÃO DE CÁLCULO
 const calculateStackPercentages = (allTagsList) => {
     const counts = {};
     let totalOccurrences = 0;
@@ -96,13 +95,14 @@ const mockDataInicial = {
 };
 
 export default function Evolucao() {
+  const navigate = useNavigate(); 
+
   const [realData, setRealData] = useState(mockDataInicial);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState(null);
   const [userName, setUserName] = useState("");
   const [userData, setUserData] = useState({});
   
-  // Controla se mostra todas as tecnologias ou só as top 6
   const [showAllTech, setShowAllTech] = useState(false);
 
   const achievements = [
@@ -177,7 +177,6 @@ export default function Evolucao() {
           const evRes = await api.get('/api/eventos', { headers: { Authorization: `Bearer ${token}` } });
           eventos = evRes.data.filter(ev => ev.empresaNome === userData.empresa?.nome) || [];
           
-          // Para empresa: Só pega tags dos projetos que ela criou
           projetos.forEach(p => {
               const pTags = parseTagsString(p.tags);
               allTagsForCalculation = [...allTagsForCalculation, ...pTags];
@@ -217,7 +216,6 @@ export default function Evolucao() {
       });
 
       const graficosData = Object.values(mesesMap);
-
       const tecnologiasStack = calculateStackPercentages(allTagsForCalculation);
 
       const processedData = {
@@ -257,7 +255,37 @@ export default function Evolucao() {
     <div className="evolucoes-page">
       <div className="container">
         
-        {/* HEADER */}
+        <div style={{ marginBottom: '25px' }}>
+            <button 
+                onClick={() => navigate(-1)} 
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    backgroundColor: '#3298EF',
+                    color: '#fff', 
+                    border: 'none',
+                    borderRadius: '8px', 
+                    padding: '10px 20px',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    boxShadow: '0 4px 6px rgba(50, 152, 239, 0.2)',
+                    transition: 'all 0.3s ease'
+                }}
+                onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = '#2563eb';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = '#3298EF';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                }}
+            >
+                <FaArrowLeft /> Voltar
+            </button>
+        </div>
+
         <div className="evolucoes-header">
           <div className="header-content">
             <h1 className="page-title">
@@ -277,7 +305,6 @@ export default function Evolucao() {
           </div>
         </div>
 
-        {/* TIMELINE */}
         <div className="progress-timeline">
           <div className="timeline-header">
             <h3><FaChartLine /> Linha do Tempo da Evolução</h3>
@@ -322,7 +349,6 @@ export default function Evolucao() {
           </div>
         </div>
 
-        {/* CARDS */}
         <div className="stats-grid">
           <div className="stat-card">
             <div className="stat-icon" style={{backgroundColor: '#e0f2fe', color: '#3298EF'}}><FaBullseye /></div>
@@ -368,7 +394,6 @@ export default function Evolucao() {
           )}
         </div>
 
-        {/* GRÁFICOS E SKILLS */}
         <div className="charts-section">
           <div className="chart-row">
             <div className="chart-container">
@@ -382,6 +407,7 @@ export default function Evolucao() {
                   <Line type="monotone" dataKey="eventos" name="Eventos" stroke="#F53E3EFF" strokeWidth={3} dot={{ fill: '#F53E3EFF', r: 4 }} />
                   <Line type="monotone" dataKey="concluidos" name="Concluídos" stroke="#10b981" strokeWidth={3} dot={{ fill: '#10b981', r: 4 }} />
                   <Line type="monotone" dataKey="projetos" name="Projetos" stroke="#3298EF" strokeWidth={3} dot={{ fill: '#3298EF', r: 4 }} />
+
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -407,10 +433,8 @@ export default function Evolucao() {
             </div>
           </div>
 
-          {/* 🟢 Seção Dinâmica (Aluno vs Empresa) */}
           {realData.tecnologias.length > 0 && (
              <div className="tech-skills">
-                 {/* Título Muda baseado no Role */}
                  <h3>
                      {isAluno 
                         ? <><FaCode className="chart-icon" /> Afinidade Tecnológica</>
@@ -434,7 +458,6 @@ export default function Evolucao() {
                      ))}
                  </div>
                  
-                 {/* BOTÃO VER MAIS */}
                  {realData.tecnologias.length > 6 && (
                     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
                         <button 
@@ -460,7 +483,6 @@ export default function Evolucao() {
                     </div>
                  )}
 
-                 {/* Rodapé Dinâmico */}
                  <div style={{ marginTop: '20px', textAlign: 'center' }}>
                      <small style={{ color: '#6b7280', fontSize: '0.85rem', fontStyle: 'italic' }}>
                          {isAluno 
@@ -473,7 +495,6 @@ export default function Evolucao() {
           )}
         </div>
 
-        {/* CONQUISTAS */}
         <div className="achievements-section">
           <h3><FaBolt className="section-icon" /> Conquistas Desbloqueadas</h3>
           <div className="achievements-grid">
