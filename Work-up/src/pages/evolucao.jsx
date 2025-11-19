@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/evolucoes.css"; 
 import { 
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-    LineChart, Line, PieChart, Pie, Cell, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis
+    LineChart, Line, Cell
 } from "recharts";
 import { 
-    FaRocket, FaChartLine, FaBullseye, FaMedal, FaClock, FaUsers, 
-    FaStar, FaCalendarAlt, FaArrowUp, FaBolt, FaTrophy, FaCode
+    FaRocket, FaChartLine, FaBullseye, FaMedal, FaUsers, 
+    FaCalendarAlt, FaArrowUp, FaBolt, FaCode
 } from "react-icons/fa";
 import api from "../service/api";
 
 // --- UTILITÁRIOS ---
+
 const parseTagsString = (tagsString) => {
     if (Array.isArray(tagsString)) return tagsString;
     if (!tagsString || typeof tagsString !== 'string') return [];
@@ -47,77 +48,38 @@ const formatRegistrationDate = (dateString) => {
     return date.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
-const formatDateToMonthYear = (date) => {
-    if (!date) return "Pendente";
-    return date.toLocaleDateString('pt-BR', { year: 'numeric', month: 'long' });
+const isProjectConcluded = (p) => {
+    if (p.encerrado === true) return true;
+    if (!p.dataFim) return false;
+    const endDate = parseDate(p.dataFim);
+    if (!endDate) return false;
+    return endDate.getTime() < new Date().getTime();
 };
 
 const COLORS = ['#3298EF', '#312e81', '#1e1b4b', '#0078D1', '#111827', '#6366f1'];
 
-// 🟢 NOVO UTILITÁRIO: Determina se um projeto está concluído pela data
-const isProjectConcluded = (p) => {
-    // Se o backend trouxer 'encerrado' (booleano) use, senão use dataFim
-    if (p.encerrado === true) return true;
-    
-    if (!p.dataFim) return false;
-    const endDate = parseDate(p.dataFim);
-    if (!endDate) return false;
-    
-    // Concluído se a data de fim for anterior à data atual
-    return endDate.getTime() < new Date().getTime();
-};
+// 🟢 NOVA FUNÇÃO DE CÁLCULO (Tags Perfil + Tags Projetos)
+// Recebe uma lista bruta com todas as tags encontradas e calcula a % de frequência
+const calculateStackPercentages = (allTagsList) => {
+    const counts = {};
+    let totalOccurrences = 0;
 
-
-// 🟢 FUNÇÃO DE CÁLCULO DE SKILL (AJUSTADA)
-const calculateSkillProficiency = (projects, allTags, isAluno, totalConcluidos) => {
-    if (!allTags || allTags.length === 0 || !projects) return [];
-
-    const techMap = {};
-    let maxUsage = 0; 
-    
-    // 1. Contar o uso e a conclusão por skill
-    projects.forEach(p => {
-        const pTags = parseTagsString(p.tags);
-        
-        // 🚨 CHAVE DA CORREÇÃO: Usa a nova lógica de conclusão baseada em data/status
-        const isCompleted = isProjectConcluded(p);
-        
-        pTags.forEach(tag => {
-            const cleanTag = tag.trim();
-            if (!techMap[cleanTag]) {
-                techMap[cleanTag] = { usage: 0, completion: 0 };
-            }
-            techMap[cleanTag].usage += 1; 
-            if (isCompleted) {
-                techMap[cleanTag].completion += 1; // Contagem de conclusão real
-            }
-            maxUsage = Math.max(maxUsage, techMap[cleanTag].usage);
-        });
-    });
-
-    const normalizationFactor = maxUsage > 0 ? 100 / maxUsage : 1; 
-    
-    // 2. Aplicar fórmula de score
-    return allTags.map(tag => {
-        const stats = techMap[tag.trim()] || { usage: 0, completion: 0 };
-        let score = 0;
-
-        if (isAluno) {
-            // ALUNO: 40% Base + 60% Ponderado pela Conclusão.
-            const completionRatio = totalConcluidos > 0 ? stats.completion / totalConcluidos : 0;
-            score = 40 + (completionRatio * 60); 
-            // Se completionRatio for zero, o score fica 40 (o que está correto)
-
-        } else {
-            // EMPRESA: Frequência de Demanda
-            score = Math.round(stats.usage * normalizationFactor);
+    // Conta quantas vezes cada tecnologia aparece no total
+    allTagsList.forEach(tag => {
+        const cleanTag = tag.trim();
+        if (cleanTag) {
+            counts[cleanTag] = (counts[cleanTag] || 0) + 1;
+            totalOccurrences++;
         }
-
-        return { 
-            nome: tag.trim(), 
-            valor: Math.min(100, Math.max(1, Math.round(score))) 
-        };
     });
+
+    if (totalOccurrences === 0) return [];
+
+    // Calcula a % com base no total de menções
+    return Object.keys(counts).map(tag => ({
+        nome: tag,
+        valor: Math.round((counts[tag] / totalOccurrences) * 100)
+    })).sort((a, b) => b.valor - a.valor); // Ordena da maior % para a menor
 };
 
 
@@ -192,26 +154,43 @@ export default function Evolucao() {
 
       let projetos = [];
       let eventos = [];
-      let tagsSet = new Set();
+      
+      // Array mestre para o cálculo de porcentagem (Stack)
+      let allTagsForCalculation = []; 
+      
+      // Set para contagem simples de tecnologias únicas (Card de Estatística)
+      let uniqueTagsSet = new Set(); 
 
       if (userData.role === 'ROLE_ALUNO') {
           projetos = userData.aluno?.projetosParticipados || [];
           const evRes = await api.get('/api/eventos/minhas-inscricoes', { headers: { Authorization: `Bearer ${token}` } });
           eventos = evRes.data || [];
-          const tagsAluno = parseTagsString(userData.aluno?.tags);
-          tagsAluno.forEach(t => tagsSet.add(t));
+          
+          // 1. Adicionar Habilidades do Perfil (Input do Aluno)
+          const perfilTags = parseTagsString(userData.aluno?.tags);
+          allTagsForCalculation = [...allTagsForCalculation, ...perfilTags];
+          perfilTags.forEach(t => uniqueTagsSet.add(t));
+          
+          // 2. Adicionar Tags dos Projetos Inscritos
+          projetos.forEach(p => {
+              const pTags = parseTagsString(p.tags);
+              allTagsForCalculation = [...allTagsForCalculation, ...pTags];
+              pTags.forEach(t => uniqueTagsSet.add(t));
+          });
+
       } else if (userData.role === 'ROLE_EMPRESA') {
           const projRes = await api.get('/api/projetos/meus', { headers: { Authorization: `Bearer ${token}` } });
           projetos = projRes.data || [];
           const evRes = await api.get('/api/eventos', { headers: { Authorization: `Bearer ${token}` } });
           eventos = evRes.data.filter(ev => ev.empresaNome === userData.empresa?.nome) || [];
+          
           projetos.forEach(p => {
               const pTags = parseTagsString(p.tags);
-              pTags.forEach(t => tagsSet.add(t));
+              allTagsForCalculation = [...allTagsForCalculation, ...pTags];
+              pTags.forEach(t => uniqueTagsSet.add(t));
           });
       }
 
-      // 🚨 CORREÇÃO AQUI: Usa a nova função para calcular o divisor (total de projetos válidos)
       const projetosConcluidos = projetos.filter(p => isProjectConcluded(p)).length;
       
       const firstProject = projetos.length > 0
@@ -222,7 +201,7 @@ export default function Evolucao() {
           ? eventos.map(e => parseDate(e.date)).filter(d => d).sort((a, b) => a - b)[0]
           : null;
 
-
+      // Gráfico mensal
       const mesesLabels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
       const mesesMap = {};
       mesesLabels.forEach(m => mesesMap[m] = { mes: m, projetos: 0, eventos: 0, concluidos: 0 }); 
@@ -246,20 +225,19 @@ export default function Evolucao() {
 
       const graficosData = Object.values(mesesMap);
 
-      // 🚨 CÁLCULO REAL DE SKILLS
-      const tecnologiasData = calculateSkillProficiency(projetos, Array.from(tagsSet), userData.role === 'ROLE_ALUNO', projetosConcluidos);
-
+      // 🟢 CÁLCULO DA STACK (USANDO A LISTA COMBINADA)
+      const tecnologiasStack = calculateStackPercentages(allTagsForCalculation);
 
       const processedData = {
           totalProjetos: projetos.length,
           projetosConcluidos,
           totalEventos: eventos.length,
           duracaoMedia: projetos.length > 0 ? Math.floor(Math.random() * 5) + 1 : 0,
-          tecnologiasDominadas: tagsSet.size,
+          tecnologiasDominadas: uniqueTagsSet.size,
           colaboradores: userData.role === 'ROLE_EMPRESA' ? projetos.reduce((acc, p) => acc + (p.totalCandidatos || 0), 0) : 0,
           avaliacaoMedia: 4.8,
           projetosPorMes: graficosData,
-          tecnologias: tecnologiasData, 
+          tecnologias: tecnologiasStack, 
           firstProjectDate: firstProject,
           firstEventDate: firstEvent
       };
@@ -470,8 +448,8 @@ export default function Evolucao() {
             </div>
           </div>
 
-          {/* Nova Seção de Skills (Barras de Progresso) usando CSS novo */}
-          {userRole === 'ROLE_ALUNO' && realData.tecnologias.length > 0 && (
+          {/* 🟢 NOVA Seção de Skills RESTAURADA (Estrutura HTML Original) */}
+          {realData.tecnologias.length > 0 && (
              <div className="tech-skills">
                  <h3><FaCode className="chart-icon" /> Stack Tecnológica</h3>
                  <div className="tech-list">
@@ -480,6 +458,7 @@ export default function Evolucao() {
                              <div style={{width: '100%'}}>
                                  <div className="tech-info">
                                      <span className="tech-name">{tech.nome}</span>
+                                     {/* Exibe a porcentagem calculada */}
                                      <span className="tech-level">{tech.valor}%</span>
                                  </div>
                                  <div className="tech-bar">
