@@ -388,6 +388,9 @@ export default function Evolucao() {
           {userRole === 'ROLE_ALUNO' && realData.tecnologias.length > 0 && (
              <div className="tech-skills">
                  <h3><FaCode className="chart-icon" /> Habilidades em Destaque</h3>
+                 <p className="skills-description">
+                     A proficiência é calculada por um algoritmo interno que considera a frequência de uso, o número de projetos concluídos com a skill e a diversidade de experiências na plataforma.
+                 </p>
                  <div className="tech-list">
                      {realData.tecnologias.map((tech, index) => (
                          <div key={index} className="tech-item">
