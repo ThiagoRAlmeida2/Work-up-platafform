@@ -6,7 +6,7 @@ import {
 } from "recharts";
 import { 
     FaRocket, FaChartLine, FaBullseye, FaMedal, FaUsers, 
-    FaCalendarAlt, FaArrowUp, FaBolt, FaCode, FaChevronDown, FaChevronUp
+    FaCalendarAlt, FaArrowUp, FaBolt, FaCode, FaChevronDown, FaChevronUp, FaBriefcase
 } from "react-icons/fa";
 import api from "../service/api";
 
@@ -102,7 +102,7 @@ export default function Evolucao() {
   const [userName, setUserName] = useState("");
   const [userData, setUserData] = useState({});
   
-  // 🟢 NOVO ESTADO: Controla se mostra todas as tecnologias ou só as top 6
+  // Controla se mostra todas as tecnologias ou só as top 6
   const [showAllTech, setShowAllTech] = useState(false);
 
   const achievements = [
@@ -177,6 +177,7 @@ export default function Evolucao() {
           const evRes = await api.get('/api/eventos', { headers: { Authorization: `Bearer ${token}` } });
           eventos = evRes.data.filter(ev => ev.empresaNome === userData.empresa?.nome) || [];
           
+          // Para empresa: Só pega tags dos projetos que ela criou
           projetos.forEach(p => {
               const pTags = parseTagsString(p.tags);
               allTagsForCalculation = [...allTagsForCalculation, ...pTags];
@@ -246,10 +247,11 @@ export default function Evolucao() {
     return <div className="loading-container"><p>Carregando Dashboard...</p></div>;
   }
 
-  // 🟢 Lógica para filtrar quantas mostrar
   const displayedTechs = showAllTech 
       ? realData.tecnologias 
       : realData.tecnologias.slice(0, 6);
+      
+  const isAluno = userRole === 'ROLE_ALUNO';
 
   return (
     <div className="evolucoes-page">
@@ -260,7 +262,7 @@ export default function Evolucao() {
           <div className="header-content">
             <h1 className="page-title">
               <FaRocket className="title-icon" />
-              Evolução {userRole === 'ROLE_ALUNO' ? 'Profissional' : 'Empresarial'}
+              Evolução {isAluno ? 'Profissional' : 'Empresarial'}
             </h1>
             <p className="page-subtitle">
               Olá, <strong>{userName}</strong>. Acompanhe suas métricas e conquistas na plataforma.
@@ -295,7 +297,7 @@ export default function Evolucao() {
               <div className={`timeline-dot ${realData.totalProjetos >= 1 ? 'active' : ''}`}></div>
               <div className="timeline-content">
                 <h4>Primeiro Projeto</h4>
-                <p>{userRole === 'ROLE_ALUNO' ? 'Inscrição' : 'Criação'}</p>
+                <p>{isAluno ? 'Inscrição' : 'Criação'}</p>
                 <span className="timeline-date">{formatRegistrationDate(realData.firstProjectDate) || 'Pendente'}</span>
               </div>
             </div>
@@ -325,7 +327,7 @@ export default function Evolucao() {
           <div className="stat-card">
             <div className="stat-icon" style={{backgroundColor: '#e0f2fe', color: '#3298EF'}}><FaBullseye /></div>
             <div className="stat-content">
-                <h3>{userRole === 'ROLE_ALUNO' ? "Projetos" : "Vagas"}</h3>
+                <h3>{isAluno ? "Projetos" : "Vagas"}</h3>
                 <div className="stat-value"><span>{realData.totalProjetos}</span><span className="stat-suffix">ativos</span></div>
                 <div className="stat-trend"><FaArrowUp /> Atividade Recente</div>
             </div>
@@ -334,7 +336,7 @@ export default function Evolucao() {
           <div className="stat-card">
             <div className="stat-icon" style={{backgroundColor: '#dcfce7', color: '#10b981'}}><FaMedal /></div>
             <div className="stat-content">
-                <h3>{userRole === 'ROLE_ALUNO' ? "Concluídos" : "Encerradas"}</h3>
+                <h3>{isAluno ? "Concluídos" : "Encerradas"}</h3>
                 <div className="stat-value"><span>{realData.projetosConcluidos}</span><span className="stat-suffix">total</span></div>
             </div>
           </div>
@@ -355,7 +357,7 @@ export default function Evolucao() {
             </div>
           </div>
           
-          {userRole === 'ROLE_EMPRESA' && (
+          {!isAluno && (
              <div className="stat-card">
                 <div className="stat-icon" style={{backgroundColor: '#fee2e2', color: '#ef4444'}}><FaUsers /></div>
                 <div className="stat-content">
@@ -405,10 +407,16 @@ export default function Evolucao() {
             </div>
           </div>
 
-          {/* 🟢 Seção de Afinidade Tecnológica */}
+          {/* 🟢 Seção Dinâmica (Aluno vs Empresa) */}
           {realData.tecnologias.length > 0 && (
              <div className="tech-skills">
-                 <h3><FaCode className="chart-icon" /> Radar de Habilidades</h3>
+                 {/* Título Muda baseado no Role */}
+                 <h3>
+                     {isAluno 
+                        ? <><FaCode className="chart-icon" /> Afinidade Tecnológica</>
+                        : <><FaBriefcase className="chart-icon" /> Tecnologias Demandadas</>
+                     }
+                 </h3>
                  
                  <div className="tech-list">
                      {displayedTechs.map((tech, index) => (
@@ -426,7 +434,7 @@ export default function Evolucao() {
                      ))}
                  </div>
                  
-                 {/* 🟢 BOTÃO VER MAIS / VER MENOS */}
+                 {/* BOTÃO VER MAIS */}
                  {realData.tecnologias.length > 6 && (
                     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
                         <button 
@@ -452,10 +460,13 @@ export default function Evolucao() {
                     </div>
                  )}
 
-                 {/* Rodapé Explicativo */}
+                 {/* Rodapé Dinâmico */}
                  <div style={{ marginTop: '20px', textAlign: 'center' }}>
                      <small style={{ color: '#6b7280', fontSize: '0.85rem', fontStyle: 'italic' }}>
-                         O cálculo é baseado na frequência das tecnologias citadas no seu perfil e nos projetos que você participa.
+                         {isAluno 
+                            ? "* Cálculo baseado na frequência das tecnologias citadas no seu perfil e nos projetos que você participa."
+                            : "* Cálculo baseado nas tecnologias exigidas nos projetos e vagas criados pela sua empresa."
+                         }
                      </small>
                  </div>
              </div>
