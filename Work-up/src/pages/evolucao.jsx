@@ -251,6 +251,32 @@ export default function Evolucao() {
       
   const isAluno = userRole === 'ROLE_ALUNO';
 
+  // =========================================================================
+  // 🚩 CÁLCULO DE PROGRESSO PARA A LINHA DO TEMPO 🚩
+  // =========================================================================
+
+  const activeTimelineItems = [
+      true, // 1. Início da Jornada (Sempre ativo se está logado)
+      realData.totalProjetos >= 1, // 2. Primeiro Projeto
+      realData.totalEventos >= 1, // 3. Networking
+      realData.projetosConcluidos >= 5 // 4. Veterano (Meta)
+  ];
+
+  const totalItems = activeTimelineItems.length; // 4
+  const completedItems = activeTimelineItems.filter(item => item).length;
+  
+  let progressPercentage = 0;
+
+  if (completedItems > 1) {
+      progressPercentage = Math.round(((completedItems - 1) / (totalItems - 1)) * 100);
+  } else if (completedItems === 1) {
+      progressPercentage = 0;
+  }
+  
+  // =========================================================================
+  // 🚩 FIM DO CÁLCULO DE PROGRESSO 🚩
+  // =========================================================================
+
   return (
     <div className="evolucoes-page">
       <div className="container">
@@ -305,7 +331,10 @@ export default function Evolucao() {
           </div>
         </div>
 
-        <div className="progress-timeline">
+        <div 
+          className="progress-timeline"
+          style={{ '--progress-width': `${progressPercentage}%` }}
+        >
           <div className="timeline-header">
             <h3><FaChartLine /> Linha do Tempo da Evolução</h3>
             <p>Marcos importantes da sua trajetória</p>
