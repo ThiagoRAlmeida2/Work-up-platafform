@@ -37,7 +37,7 @@ export default function CadastroCard({ onClose }) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
-    useEffect(() => {
+  useEffect(() => {
     setFormData({
       nome: "",
       curso: "",
@@ -53,7 +53,20 @@ export default function CadastroCard({ onClose }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Função de validação de e-mail
+  const isValidEmail = (email) => {
+    const pattern = /^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|hotmail\.com|yahoo\.com|icloud\.com|live\.com)$/i;
+    return pattern.test(email);
+  };
+
   const handleSubmit = async () => {
+    // 🔹 Valida o e-mail antes de prosseguir
+    if (!isValidEmail(formData.email)) {
+      setAlertMessage("Por favor, insira um e-mail válido (gmail, outlook, hotmail, yahoo, etc).");
+      setShowAlert(true);
+      return;
+    }
+
     try {
       const payload =
         tipo === "ALUNO"
@@ -78,7 +91,7 @@ export default function CadastroCard({ onClose }) {
       setAlertMessage("Cadastro realizado com sucesso!");
       setShowAlert(true);
 
-      // Limpar os campos
+      // Limpa os campos após o cadastro
       setFormData({
         nome: "",
         curso: "",
@@ -103,7 +116,7 @@ export default function CadastroCard({ onClose }) {
       <div className="card" onClick={(e) => e.stopPropagation()}>
         <h1><FaEdit /> Faça o seu cadastro</h1>
 
-        {/* Alert */}
+        {/* Alerta */}
         {showAlert && (
           <Alert
             message={alertMessage}
@@ -252,9 +265,8 @@ export default function CadastroCard({ onClose }) {
             </>
           )}
         </div>
-        
 
-        {/* Botão */}
+        {/* Botão de envio */}
         <button onClick={handleSubmit} className="submit-btn">
           <FaCheck /> Finalizar Cadastro
         </button>
